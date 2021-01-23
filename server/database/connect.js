@@ -13,7 +13,6 @@ module.exports = {
 			}, (err, client) => {
 				if (err) {
 					reject(err);
-
 				} else {
 					db = client.db("bidme")
 

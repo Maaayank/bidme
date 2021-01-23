@@ -47,7 +47,7 @@ app.use((req, res) => {
 database.connect().then((str) => {
     console.log(str)
     app.listen(PORT, () => {
-        console.log(`🛡️  Server listening on port: ${PORT} 🛡️`)
+        console.log(`🛡️  Server listening on port: ${PORT}`)
     })
 }).catch((e) => {
     console.error(e)
