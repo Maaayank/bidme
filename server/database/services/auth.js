@@ -82,7 +82,8 @@ module.exports = {
             email: email,
             pass: pass,
             username: username,
-            phone: phone
+            phone: phone,
+            wallet: 100
         }).then(() => {
             return {
                 insert: true
