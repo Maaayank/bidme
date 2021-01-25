@@ -51,7 +51,7 @@ module.exports = {
         var result = await users.findOne({ email: email }, { projection: { id: 1, email: 1 } })
 
         if (result == null) {
-            return{
+            return {
                 exists: false
             }
         } else {
@@ -76,19 +76,28 @@ module.exports = {
         }
     },
 
-    newUser: async (db, email, pass, username, phone) => {
+    newUser: async (db, uid, email, pass, username, phone) => {
         const users = db.collection('users')
-        users.insertOne({
+        console.log("here")
+        const result = await users.insertOne({
+            uid: uid,
             email: email,
             pass: pass,
             username: username,
             phone: phone,
             wallet: 100
-        }).then(() => {
+        })
+
+        console.log(result)
+        if (result != null) {
             return {
                 insert: true
             }
-        })
+        } else {
+            return {
+                insert: false
+            }
+        }
     }
 
 }

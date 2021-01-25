@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const dbClient = require('../../database').client
-const dbServices = require('../../database').services
+const services = require('../../database').services
 
 const jwt_secret = require('../../config').jwt.jwt_secret
 const salting = require('../../config').jwt.salting_rounds
@@ -41,7 +41,7 @@ router.post('/signup', async (req, res) => {
         const hash_pass = await bcrypt.hash(pass, salting)
         const uid = Math.floor(Math.random() * 99745 + Math.random() * 5434)
 
-        const result = await services.newUser(db, uid, email, hash_pass, username, phone)
+        const result = await services.newUser(db, uid ,email, hash_pass, username, phone)
 
         if (result.insert) {
             res.status(200).json({
@@ -62,8 +62,10 @@ router.post('/signup', async (req, res) => {
                 success: false
             })
         } else {
+            console.log(e.message)
             res.status(500).json({
-                msg: `Somethng went wrong, try again later`
+                msg: `Somethng went wrong, try again later`,
+                success: false
             })
         }
     }
@@ -73,7 +75,6 @@ router.post('/login', async (req, res) => {
     try {
         const db = dbClient.get()
         var e = new Error()
-        console.log(req)
         const email = req.body.email
         const pass = req.body.pass
 
@@ -118,6 +119,7 @@ router.post('/login', async (req, res) => {
             })
         }
 
+
     } catch (err) {
 
         if (err.code == 301 || err.code == 401) {
@@ -149,7 +151,7 @@ router.get('/logout', async (req, res) => {
             throw e
         }
 
-        const res = await dbServices.dedTokenUpdateOne(db, token)
+        const res = await services.dedTokenUpdateOne(db, token)
 
         if (res.insert) {
             res.clearCookie('token').status(200).json({
