@@ -41,7 +41,7 @@ router.post('/signup', async (req, res) => {
         const hash_pass = await bcrypt.hash(pass, salting)
         const uid = Math.floor(Math.random() * 99745 + Math.random() * 5434)
 
-        const result = await services.newUser(db, uid ,email, hash_pass, username, phone)
+        const result = await services.newUser(db, uid, email, hash_pass, username, phone)
 
         if (result.insert) {
             res.status(200).json({
@@ -71,10 +71,13 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+
 router.post('/login', async (req, res) => {
     try {
-        const db = dbClient.get()
+
         var e = new Error()
+
+        const db = dbClient.get()
         const email = req.body.email
         const pass = req.body.pass
 
@@ -117,6 +120,10 @@ router.post('/login', async (req, res) => {
                     msg: `Welcome ${result.username}`
                 })
             })
+        } else {
+            e.message = `Invalid Credentials`
+            e.code = 400
+            throw e
         }
 
 

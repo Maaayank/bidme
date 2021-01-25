@@ -3,45 +3,36 @@ const dbClient = require('../database').client
 const dbServices = require('../database').services
 const jwt = require('jsonwebtoken')
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
 
-    const token = req.cookies.token || ''
-    const db = dbClient.get()
-    const ded = db.collection('dedtokens')
+    try {
 
-    if (token) {
-        const options = {
-            issuer: 'bidme'
+        const token = req.cookies.token || ''
+        const db = dbClient.get()
+
+        if (token) {
+            const options = {
+                issuer: 'bidme'
+            }
+
+            const decoded = await jwt.verify(token, jwtSecret, options)
+            const result = await dbServices.dedtokenFindOne(db, token)
+
+            if (!result.exists) {
+                req.decoded = decoded
+                console.log(`User Authenticated`)
+                next()
+            } else {
+                throw new Error(`Token Expired !! -> ${token}`)
+            }
+        } else {
+            throw new Error()
         }
 
-        jwt.verify(token, jwtSecret, options).then((decoded) => {
-
-            dbServices.dedtokenFindOne()
-            ded.findOne(
-                { token: token },
-                { projection: { _id: 0 } }
-            ).then((result) => {
-
-                if (result == null) {
-
-                    console.log(`User Authenticated`)
-                    req.decoded = decoded
-                    next()
-                } else {
-                    throw Error(`Token Expired !! -> ${token}`)
-                }
-            })
-        }).catch((err) => {
-
-            console.log(err)
-            res.status(401).json({
-                msg: `Token Expired or illegal token.`,
-                success: false
-            })
-        })
-    } else {
+    } catch (err) {
+        console.log(err)
         res.status(401).json({
-            msg: `Authentication required.`,
+            msg: `Authentication Required`,
             success: false
         })
     }

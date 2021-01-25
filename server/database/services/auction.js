@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
 
 
     placeBid: async (db, amount, pid, uid, transaction_id) => {
@@ -23,5 +23,11 @@ module.export = {
                 }
             }
         )
-    }
+    },
+
+    // getAllPrevBidsAmount : async (db, pid, uid) => {
+
+    //     const products = db.collection('products')
+    //     const result = await products
+    // }
 }

@@ -48,7 +48,7 @@ module.exports = {
     checkIfUserExists: async (db, email) => {
 
         const users = db.collection('users')
-        var result = await users.findOne({ email: email }, { projection: { id: 1, email: 1 } })
+        var result = await users.findOne({ email: email }, { projection: { uid: 1, email: 1 } })
 
         if (result == null) {
             return {
@@ -64,12 +64,12 @@ module.exports = {
     getUser: async (db, email) => {
 
         const users = db.collection('users')
-        var results = await users.findOne({ email: email }, { projection: { id: 1, email: 1, pass: 1, username: 1 } })
+        var results = await users.findOne({ email: email }, { projection: { uid: 1, email: 1, pass: 1, username: 1 } })
 
         if (results == null) {
             var e = new Error()
             e.message = `User doesn't exist`
-            e.code = 301
+            e.code = 401
             throw e
         } else {
             return results
@@ -78,7 +78,6 @@ module.exports = {
 
     newUser: async (db, uid, email, pass, username, phone) => {
         const users = db.collection('users')
-        console.log("here")
         const result = await users.insertOne({
             uid: uid,
             email: email,
@@ -88,7 +87,6 @@ module.exports = {
             wallet: 100
         })
 
-        console.log(result)
         if (result != null) {
             return {
                 insert: true
