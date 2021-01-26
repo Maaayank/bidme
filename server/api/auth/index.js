@@ -111,7 +111,7 @@ router.post('/login', async (req, res) => {
             if (match) {
 
                 const payload = {
-                    id: result.id
+                    id: result.uid
                 }
 
                 const options = { expiresIn: '10d', issuer: 'bidme' }

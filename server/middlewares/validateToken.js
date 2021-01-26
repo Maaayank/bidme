@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
         console.log(token)
         const db = dbClient.get()
 
-        if (token) {
+        if (token != '') {
             const options = {
                 issuer: 'bidme'
             }

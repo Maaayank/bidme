@@ -11,7 +11,7 @@ router.get('/profile', async (req, res) => {
 
         console.log(id)
         const result = await services.getProfile(db, id)
-
+        console.log(result)
         if (result.exists) {
             res.status(200).json({
                 success: true,

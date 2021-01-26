@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontend';
-  wallet = 100;
-  username = '3idiots'
+  title = '';
+  wallet = 0;
+  username = ''
   isLoggedin = false
 }

@@ -3,8 +3,9 @@ module.exports = {
     getProfile: async (db, uid) => {
 
         const users = db.collection('users')
-        const result = await users.findOne({ uid: uid }, { uid: 1, username: 1, email: 1, wallet: 1 })
+        const result = await users.findOne({ uid: uid },{ projection:{ uid: 1, username: 1, email: 1, wallet: 1 }})
 
+        console.log("----------------------------------\n\n\n\n\n" + uid + " \n\n ------------------")
         if (result != null) {
             return {
                 exists: true,
