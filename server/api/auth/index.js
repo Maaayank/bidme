@@ -277,9 +277,9 @@ router.get('/logout', async (req, res) => {
             throw e
         }
 
-        const res = await services.dedTokenUpdateOne(db, token)
+        const result = await services.dedTokenUpdateOne(db, token)
 
-        if (res.insert) {
+        if (result.insert) {
             res.clearCookie('token').status(200).json({
                 msg: 'logged out successfully',
                 success: true
@@ -291,6 +291,7 @@ router.get('/logout', async (req, res) => {
         }
 
     } catch (err) {
+        console.log(err)
         if (err.code == 300 || err.code == 500) {
             res.status(err.code).json({
                 success: false,

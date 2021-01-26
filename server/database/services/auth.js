@@ -11,7 +11,7 @@ module.exports = {
             }
         )
 
-        console.log('res:' +  result)
+        console.log('res:' + result)
         if (result == null) {
             return {
                 exists: false
@@ -27,7 +27,7 @@ module.exports = {
 
     dedTokenUpdateOne: async (db, token) => {
         const ded = db.collection('dedtoken')
-        ded.updateOne(
+        const result = await ded.updateOne(
             {
                 token: token
             },
@@ -39,11 +39,17 @@ module.exports = {
             {
                 upsert: true
             }
-        ).then((res) => {
+        )
+
+        if (result != null) {
             return {
                 insert: true
             }
-        })
+        } else {
+            return {
+                insert: false
+            }
+        }
     },
 
     checkIfUserExists: async (db, email) => {
