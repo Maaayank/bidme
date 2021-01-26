@@ -22,6 +22,10 @@ module.exports = {
 
     logs: {
         level: process.env.LOG_LEVEL || 'dev',
+    },
+
+    gsignin: {
+        client_id: process.env.CLIENT_ID || ''
     }
 
 };

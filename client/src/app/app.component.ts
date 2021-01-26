@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'frontend';
+  wallet = 100;
+  username = '3idiots'
+  isLoggedin = false
 }

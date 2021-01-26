@@ -9,15 +9,16 @@ router.get('/profile', async (req, res) => {
         const id = req.decoded.id
         const db = dbClient.get()
 
+        console.log(id)
         const result = await services.getProfile(db, id)
 
-        if (result != null) {
+        if (result.exists) {
             res.status(200).json({
                 success: true,
-                uid: uid,
-                username: username,
-                email: email,
-                wallet: wallet
+                uid: result.uid,
+                username: result.username,
+                email: result.email,
+                wallet: result.wallet
             })
         }
     } catch (err) {

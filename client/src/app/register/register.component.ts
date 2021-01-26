@@ -10,31 +10,30 @@ declare var gapi: any;
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  registerForm:FormGroup=new FormGroup({
-    email:new FormControl(null,[Validators.email,Validators.required]),
-    username:new FormControl(null,Validators.required),
-    pass:new FormControl(null,Validators.required),
-    cpass:new FormControl(null,Validators.required)
+  registerForm: FormGroup = new FormGroup({
+    email: new FormControl(null, [Validators.email, Validators.required]),
+    username: new FormControl(null, Validators.required),
+    pass: new FormControl(null, Validators.required),
+    cpass: new FormControl(null, Validators.required)
     //phone:new FormControl(null,Validators.required)
 
   });
-  constructor(private _router:Router,private _userService:UserService,private toastr: ToastrService) { }
+  constructor(private _router: Router, private _userService: UserService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.btnRender();
   }
-  moveToLogin(){
+  moveToLogin() {
     this._router.navigate(['/login']);
   }
-  register(){
-    if(!this.registerForm.valid || (this.registerForm.controls.pass.value!=this.registerForm.controls.cpass.value)){
+  register() {
+    if (!this.registerForm.valid || (this.registerForm.controls.pass.value != this.registerForm.controls.cpass.value)) {
       console.log("invalid");
       return;
     }
-    this._userService.register(JSON.stringify(this.registerForm.value)).subscribe(data=>{console.log(data); this._router.navigate(['/login']); this.toastr.success("",data.msg)},
-    error=>console.error(error.error)
+    this._userService.register(JSON.stringify(this.registerForm.value)).subscribe(data => { console.log(data); this._router.navigate(['/login']); this.toastr.success("", data.msg) },
+      error => { console.error(error.error); this.toastr.error("", error.error.msg) }
     );
-    //console.log(JSON.stringify(this.registerForm.value));
   }
 
 
@@ -53,7 +52,7 @@ export class RegisterComponent implements OnInit {
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail());
 
-   // your-code-goes-here
+        // your-code-goes-here
 
       }),
       onfailure: ((error) => {

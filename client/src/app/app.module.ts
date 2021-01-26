@@ -8,7 +8,7 @@ import { RegisterComponent } from './register/register.component';
 //import { UserhomeComponent } from './userhome/userhome.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {UserService} from './user.service';
+import { UserService } from './user.service';
 import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

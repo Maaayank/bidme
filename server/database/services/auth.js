@@ -2,25 +2,26 @@ module.exports = {
 
     dedtokenFindOne: async (db, token) => {
         const ded = db.collection('dedtoken')
-        ded.findOne(
+        const result = await ded.findOne(
             {
                 token: token
             },
             {
                 projection: { _id: 0 }
             }
-        ).then((res) => {
+        )
 
-            if (res == null) {
-                return {
-                    exists: false
-                }
-            } else {
-                return {
-                    exists: true
-                }
+        console.log('res:' +  result)
+        if (result == null) {
+            return {
+                exists: false
             }
-        })
+        } else {
+            return {
+                exists: true
+            }
+        }
+
     },
 
 
@@ -48,7 +49,7 @@ module.exports = {
     checkIfUserExists: async (db, email) => {
 
         const users = db.collection('users')
-        var result = await users.findOne({ email: email }, { projection: { uid: 1, email: 1 } })
+        var result = await users.findOne({ email: email }, { projection: { uid: 1, email: 1, sub: 1 } })
 
         if (result == null) {
             return {
@@ -56,7 +57,10 @@ module.exports = {
             }
         } else {
             return {
-                exixts: true,
+                exists: true,
+                email: result.email,
+                uid: result.uid,
+                sub: result.sub
             }
         }
     },
@@ -76,7 +80,7 @@ module.exports = {
         }
     },
 
-    newUser: async (db, uid, email, pass, username, phone) => {
+    newUser: async (db, uid, email, pass, username, phone, sub) => {
         const users = db.collection('users')
         const result = await users.insertOne({
             uid: uid,
@@ -84,6 +88,7 @@ module.exports = {
             pass: pass,
             username: username,
             phone: phone,
+            sub: sub,
             wallet: 100
         })
 

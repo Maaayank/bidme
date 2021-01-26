@@ -8,6 +8,8 @@ module.exports = async (req, res, next) => {
     try {
 
         const token = req.cookies.token || ''
+
+        console.log(token)
         const db = dbClient.get()
 
         if (token) {
