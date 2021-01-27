@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from '../../services/data.service'
@@ -13,24 +13,25 @@ declare var gapi: any;
   styleUrls: ['./login.component.css']
 })
 
-//@ViewChild('loginRef', {static: true }) loginElement: ElementRef;
 export class LoginComponent implements OnInit {
-
   loginForm: FormGroup = new FormGroup({
-    email: new FormControl(null, [Validators.email, Validators.required]),
-    pass: new FormControl(null, Validators.required)
+    email: new FormControl('', [Validators.email, Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+    pass: new FormControl('', Validators.required)
   });
-
+get email(){return this.loginForm.get('email')}
   constructor(
     private _router: Router,
     private _user: UserService,
     private _toastr: ToastrService,
-    private _dataService: DataService
+    private _dataService: DataService,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.btnRender();
+
   }
+
 
   moveToRegister() {
     this._router.navigate(['/register']);
@@ -40,6 +41,7 @@ export class LoginComponent implements OnInit {
       console.log("Invalid");
       return
     }
+
 
     this._user.login(JSON.stringify(this.loginForm.value))
       .subscribe(
