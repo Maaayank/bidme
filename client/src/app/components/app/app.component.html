@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">BidMe</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <!-- <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/register']" routerLinkActive="active">Register
+                  <span class="sr-only">(current)</span>
+              </a>
+          </li> -->
+            <li class="nav-item" *ngIf= "!isLoggedIn">
+                <a class="nav-link" [routerLink]="['/login']" routerLinkActive="active"><img height="25px" width="25px" src="https://img.icons8.com/color/48/000000/enter-2.png"/>Sign In</a>
+            </li>
+            <ul class="nav-item" *ngIf= "isLoggedIn" style="position:relative;list-style-type: none;">
+                <li>
+                    <a class="nav-link nav-dropdown dropdown-toggle"  data-toggle="dropdown" style="position: relative; cursor: pointer;"><img height="30px" width = "30px" src="https://img.icons8.com/color/48/fa314a/circled-user-male-skin-type-4--v2.png"/>{{username}}</a>
+                    <div class="dropdown-menu" role="menu" style="position: absolute; top:100%; right: 0; margin-left: 10px; text-align:start; padding-left: 10px; cursor: pointer;">
+                        <a (click)="logout()"><img height="25px" width = "25px" src="https://img.icons8.com/color/48/fa314a/shutdown--v1.png" style="margin: 5px;"/>Logout</a>  
+                    </div>
+                </li>
+            </ul>
+            <li class="nav-item" *ngIf = "isLoggedIn" style="cursor: pointer;">
+                <a class="nav-link" ><img  height="25px" width = "25px" src="https://img.icons8.com/dusk/64/000000/rupee.png"/> {{wallet}}</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="continer-fluid" style="background-image: url('../../../assets/abstract-1867838_1920.jpg');">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
