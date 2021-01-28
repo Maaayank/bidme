@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from '../../services/data.service'
 
-//declare var M: any;
 declare var gapi: any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,11 +14,13 @@ declare var gapi: any;
 })
 
 export class LoginComponent implements OnInit {
+
   loginForm: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+    email: new FormControl('', [Validators.email, Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
     pass: new FormControl('', Validators.required)
   });
-get email(){return this.loginForm.get('email')}
+
+  get email() { return this.loginForm.get('email') }
   constructor(
     private _router: Router,
     private _user: UserService,
@@ -29,20 +31,15 @@ get email(){return this.loginForm.get('email')}
 
   ngOnInit(): void {
     this.btnRender();
-
   }
 
 
   moveToRegister() {
-    this._router.navigate(['/register']);
+    window.open("/register","_self")
   }
+
   login() {
-    if (!this.loginForm.valid) {
-      console.log("Invalid");
-      return
-    }
-
-
+    
     this._user.login(JSON.stringify(this.loginForm.value))
       .subscribe(
 
@@ -66,16 +63,13 @@ get email(){return this.loginForm.get('email')}
     });
   }
 
-
-
   public btnRender(): void {
     const options = {
       scope: 'profile email',
-      width: 250,
+      width: 'auto',
       height: 50,
       longtitle: true,
       theme: 'dark',
-
 
       onsuccess: ((googleUser: any) => {
         let profile = googleUser.getBasicProfile();
@@ -108,5 +102,14 @@ get email(){return this.loginForm.get('email')}
     };
 
     gapi.signin2.render('googleBtn', options);
+
+  }
+
+  onSignedIn(googleUser: any) {
+    let profile = googleUser.getBasicProfile();
+    const token = googleUser.getAuthResponse().id_token
+    const username = profile.getName()
+    const email = profile.getEmail()
+    console.log(token + " " + username + " " + email )
   }
 }

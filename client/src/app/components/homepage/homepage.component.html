@@ -1,1 +1,70 @@
-yello
+<div class="col-md-8 offset-md-2">
+    <div class="container my-style card-body" style="margin-top: 10px;">
+        <div class="card-body row">
+            <div class="col-md-12 card-body my-style text-center font-weight-bold">
+                {{data.productTitle}}
+            </div>
+            <div class="col-md-6 card-body my-style text-left" style="margin-top:10px">
+                <span class="border rounded border-primary"
+                    style="padding:5px 10px 5px 10px; margin-right: 10px; display: inline-block;">MANUFACTURED BY</span>
+                :
+                <input class=" rounded border border-success" placeholder="enter value" [(ngModel)]="data.manufacturer"
+                    style=" margin-top: 10px; padding:5px 10px 5px 10px; margin-left: 10px; display: inline-block;" />
+            </div>
+            <div class="col-md-5 offset-md-1 card-body my-style text-left" style="margin-top:10px" *ngIf="data.price">
+                <span class="border rounded border-primary"
+                    style="padding:5px 10px 5px 10px; margin-right: 10px;">WALMART PRICE</span>
+                :
+                <span class="border rounded border-success"
+                    style="padding:5px 10px 5px 10px; margin-left: 10px; ">{{data.price}} $</span>
+                <a style="cursor: pointer; margin-left: 20px;" (click)="removeField('price')"><img
+                        src="https://img.icons8.com/material-rounded/24/fa314a/filled-trash.png" /></a>
+            </div>
+        </div>
+        <div class="card-body row my-style">
+            <span class="col-md-12" style="margin: 10px;"><b>Product HighLights :</b></span>
+            <form [formGroup]="highlights_form" class="col-md-12">
+                <div class="form-group input-group" style="margin-top:15px">
+                    <input formControlName="highlight" class="form-control" placeholder="highlight" type="text"
+                        required>
+                    <button type="submit" class="btn btn-primary " [disabled]="highlights_form.invalid"
+                        (click)="addHighlight()" style="margin-left: 20px;">Add</button>
+                </div>
+            </form>
+            <div class="border border-success rounded" style="margin: 5px; padding: 5px 10px 5px 10px;"
+                *ngFor=" let highlight of data.productHighlights; let i = index">
+                <span>{{highlight}}</span>
+                <a style="cursor: pointer; margin-left: 10px;" (click)="removeHighLight(i)"><img
+                        src="https://img.icons8.com/material-rounded/24/fa314a/filled-trash.png" /></a>
+            </div>
+        </div>
+        <div class="container my-style" style="margin-top: 10px;">
+            <div class="card-body ">
+                <form [formGroup]="feature_form">
+                    <span><b>Add Features : </b></span>
+                    <div class="form-group input-group" style="margin-top:15px">
+                        <input formControlName="name" class="form-control" placeholder="Feature" type="text" required>
+                        <span style="margin-left: 10px; margin-right: 10px;"><b>:</b></span>
+                        <input formControlName="value" class="form-control" placeholder="value" type="text" required>
+                        <button type="submit" class="btn btn-primary " [disabled]="feature_form.invalid"
+                            (click)="addFeature()" style="margin-left: 20px;">Add</button>
+                    </div>
+                </form>
+                <button class="btn btn-danger btn-block" style="height: 2px; padding: 0px;"></button>
+                <br>
+                <div class=" my-style rounded"
+                    style="margin-top:10px; margin-right: 10px; display: inline-block; padding: 10px;"
+                    *ngFor="let feature of data.productDetails; let i = index">
+                    <span class=" border  border-primary rounded text-primary card-body"
+                        style="padding-top: 5px; padding-left:10px; padding-bottom:5px; padding-right: 10px; display: inline-block;"><b>{{feature.name}}</b></span>
+                    :
+                    <input class=" text-success rounded border border-success" placeholder="enter value"
+                        [(ngModel)]="feature.value"
+                        style="padding-top: 5px; padding-left:10px; padding-bottom:5px; padding-right: 5px; display: inline-block;" />
+                    <a style="cursor: pointer; margin-left: 20px; display:inline-block;" (click)="removeFeature(i)"><img
+                            src="https://img.icons8.com/material-rounded/24/fa314a/filled-trash.png" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

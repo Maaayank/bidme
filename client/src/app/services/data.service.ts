@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HAMMER_LOADER } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -15,9 +16,7 @@ export class DataService {
     private _isLoggedIn = new BehaviorSubject<Boolean>(false)
     isLoggedIn = this._isLoggedIn.asObservable();
 
-
     constructor() {
-
     }
 
     changeUsername(username: String) {

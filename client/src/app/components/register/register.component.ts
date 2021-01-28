@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
   }
 
   moveToLogin() {
-    this._router.navigate(['/login']);
+    window.open("/login", "_self")
   }
 
   register() {
@@ -59,7 +59,7 @@ export class RegisterComponent implements OnInit {
   public btnRender(): void {
     const options = {
       scope: 'profile email',
-      width: 250,
+      width: 'auto',
       height: 50,
       longtitle: true,
       theme: 'dark',
