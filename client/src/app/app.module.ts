@@ -16,7 +16,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { HomepageComponent } from './components/homepage/homepage.component';
 
-import { SocialLoginModule} from 'angularx-social-login';
+import { SocialLoginModule } from 'angularx-social-login';
 
 
 @NgModule({
@@ -33,7 +33,7 @@ import { SocialLoginModule} from 'angularx-social-login';
     ReactiveFormsModule,
     HttpClientModule,
     SocialLoginModule,
-    ToastrModule.forRoot({"positionClass": "toast-bottom-right"}),
+    ToastrModule.forRoot({ "positionClass": "toast-bottom-right" }),
     BrowserAnimationsModule,
     SocialLoginModule
   ],

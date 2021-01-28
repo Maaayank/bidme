@@ -15,20 +15,20 @@ export class DataService {
     private _isLoggedIn = new BehaviorSubject<Boolean>(false)
     isLoggedIn = this._isLoggedIn.asObservable();
 
-    
-    constructor(){
+
+    constructor() {
 
     }
 
-    changeUsername(username: String){
+    changeUsername(username: String) {
         this._username.next(username)
     }
 
-    changeWallet(wallet: String){
+    changeWallet(wallet: String) {
         this._wallet.next(wallet)
     }
 
-    toggleIsLoggedIn(isLoggedIn: Boolean){
+    toggleIsLoggedIn(isLoggedIn: Boolean) {
         this._isLoggedIn.next(isLoggedIn)
     }
 }

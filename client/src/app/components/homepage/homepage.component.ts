@@ -25,7 +25,7 @@ export class HomepageComponent implements OnInit {
             this._toastr.success("", data.msg)
           }
         },
-        
+
         error => {
           this._dataService.toggleIsLoggedIn(false)
         }
