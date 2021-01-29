@@ -11,6 +11,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class HomepageComponent implements OnInit {
 
+  out : Boolean = true;
   feature_form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     value: new FormControl('', [Validators.required])
@@ -31,7 +32,7 @@ export class HomepageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    // this._dataService.out.subscribe(ot=>this.out=ot)
     this.products = this._user.productsList()
     console.log(this.products)
 
@@ -90,7 +91,9 @@ export class HomepageComponent implements OnInit {
 
   onNext(){
     // res = this._user.serchByKeyword()
-    this.data = this._user.apiData("/ip/Sony-PlayStation-4-500GB-Slim-System-Black/406966077")
+    this.out = false;
+    this.data = this._user.apiData();
+
   }
 
 }
