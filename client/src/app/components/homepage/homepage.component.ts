@@ -20,36 +20,9 @@ export class HomepageComponent implements OnInit {
     highlight: new FormControl('', [Validators.required])
   })
 
-  data = {
-    productTitle: "X Rocker X-Pro 300 Black Pedestal Gaming Chair Rocker with Built-in Speakers",
-    manufacturer: "X Rocker ",
-    price: 108,
-    productHighlights: [
-      "Dimensions: 27.36L x 22.44W x 19.69H in",
-      "Long-lasting plastic frame",
-      "Breathable black fabric",
-      "Swivel and rocker pedestal base",
-      "Bluetooth speakers and subwoofer"
-    ],
-    productDetails: [
-      {
-        "name": "Brand",
-        "value": "X Rocker"
-      },
-      {
-        "name": "Age Group",
-        "value": "Adult Teen Child"
-      },
-      {
-        "name": "Features",
-        "value": "2 speakers for total immersion surround sound Powerful subwoofer Built-in Bluetooth"
-      },
-      {
-        "name": "Color",
-        "value": "Black"
-      }
-    ]
-  }
+  
+  data = {}
+  products = []
 
   constructor(
     private _user: UserService,
@@ -58,6 +31,9 @@ export class HomepageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.products = this._user.productsList()
+    console.log(this.products)
 
     this._user.profile()
       .subscribe(
@@ -79,6 +55,9 @@ export class HomepageComponent implements OnInit {
   }
 
   addFeature() {
+  
+    !('productDetails' in this.data) && (this.data.productDetails = [])
+
     this.data.productDetails.push(this.feature_form.value)
     this.feature_form.setValue({
       name: "",
@@ -87,7 +66,11 @@ export class HomepageComponent implements OnInit {
   }
 
   addHighlight() {
+
+    !('productHighlights' in this.data) && (this.data.productHighlights = [])
+
     this.data.productHighlights.push(this.highlights_form.value.highlight)
+
     this.highlights_form.setValue({
       highlight: ""
     })
@@ -103,6 +86,11 @@ export class HomepageComponent implements OnInit {
 
   removeHighLight(i) {
     this.data.productHighlights.splice(i, 1)
+  }
+
+  onNext(){
+    // res = this._user.serchByKeyword()
+    this.data = this._user.apiData("/ip/Sony-PlayStation-4-500GB-Slim-System-Black/406966077")
   }
 
 }

@@ -1,9 +1,10 @@
 <div class="col-md-8 offset-md-2">
+    <button class=" btn btn-danger" style="padding:0 10px; margin: 10px;" (click)="onNext()">
+        Next
+    </button>
     <div class="container my-style card-body" style="margin-top: 10px;">
         <div class="card-body row">
-            <div class="col-md-12 card-body my-style text-center font-weight-bold">
-                {{data.productTitle}}
-            </div>
+            <input class="col-md-12 card-body my-style text-center font-weight-bold" [(ngModel)]="data.productTitle" />
             <div class="col-md-6 card-body my-style text-left" style="margin-top:10px">
                 <span class="border rounded border-primary"
                     style="padding:5px 10px 5px 10px; margin-right: 10px; display: inline-block;">MANUFACTURED BY</span>
