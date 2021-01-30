@@ -20,7 +20,7 @@ export class HomepageComponent implements OnInit {
     highlight: new FormControl('', [Validators.required])
   })
 
-  
+
   data = {}
   products = []
 
@@ -32,7 +32,6 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.products = this._user.productsList()
     console.log(this.products)
 
     this._user.profile()
@@ -55,7 +54,7 @@ export class HomepageComponent implements OnInit {
   }
 
   addFeature() {
-  
+
     !('productDetails' in this.data) && (this.data.productDetails = [])
 
     this.data.productDetails.push(this.feature_form.value)
@@ -67,9 +66,9 @@ export class HomepageComponent implements OnInit {
 
   addHighlight() {
 
-    !('productHighlights' in this.data) && (this.data.productHighlights = [])
+    !('productHiglight' in this.data) && (this.data.productHiglight = [])
 
-    this.data.productHighlights.push(this.highlights_form.value.highlight)
+    this.data.productHiglight.push(this.highlights_form.value.highlight)
 
     this.highlights_form.setValue({
       highlight: ""
@@ -85,12 +84,35 @@ export class HomepageComponent implements OnInit {
   }
 
   removeHighLight(i) {
-    this.data.productHighlights.splice(i, 1)
+    this.data.productHiglight.splice(i, 1)
   }
 
-  onNext(){
-    // res = this._user.serchByKeyword()
-    this.data = this._user.apiData("/ip/Sony-PlayStation-4-500GB-Slim-System-Black/406966077")
+  onNext() {
+
+    this._user.productSearchByKeywords("HP envy").subscribe(
+
+      (data: any) => {
+        this._user.productDetails(data.productsTitles[0].pid).subscribe(
+          (data: any) => {
+            console.log(data.product);
+            this.data = data.product
+            this._toastr.success("success product")
+          },
+
+          error => {
+            console.error(error.error);
+            this._toastr.error("", error.error.msg)
+          }
+        )
+        console.log(data.productsTitles[0]);
+        this._toastr.success("success")
+      },
+
+      error => {
+        console.error(error.error);
+        this._toastr.error("", error.error.msg)
+      }
+    )
   }
 
 }

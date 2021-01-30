@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { DataService } from './data.service';
 export class UserService {
 
   url: string = 'http://127.0.0.1:3000';
+  product_api: string = "https://product-info-api.herokuapp.com/api"
 
   constructor(private _http: HttpClient, private _dataService: DataService) { }
 
@@ -49,12 +50,30 @@ export class UserService {
     })
   }
 
-  apiData() {
-    return this._dataService.getData();
+  productTitles(){
+    return this._http.get(this.product_api + '/titles', {
+      observe: 'body',
+      withCredentials: false,
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    })
   }
 
-  productsList() {
-    return this._dataService.getProducts();
+  productSearchByKeywords(keyword){
+    let params = new HttpParams().set('keyword', keyword);
+    return this._http.get(this.product_api + '/search', {
+      params: params,
+      observe: 'body',
+      withCredentials: false,
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    })
+  }
+
+  productDetails(pid){
+    return this._http.get(this.product_api + '/search/' + pid, {
+      observe: 'body',
+      withCredentials: false,
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    })
   }
 
 }
