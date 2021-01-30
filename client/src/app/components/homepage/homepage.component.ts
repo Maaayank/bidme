@@ -88,7 +88,7 @@ export class HomepageComponent implements OnInit {
   }
 
   onNext() {
-
+    this.out = false;
     this._user.productSearchByKeywords("HP envy").subscribe(
 
       (data: any) => {
