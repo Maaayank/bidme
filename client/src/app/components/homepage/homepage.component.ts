@@ -11,6 +11,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class HomepageComponent implements OnInit {
 
+  out: Boolean = true;
   feature_form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     value: new FormControl('', [Validators.required])
@@ -31,7 +32,6 @@ export class HomepageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     console.log(this.products)
 
     this._user.profile()

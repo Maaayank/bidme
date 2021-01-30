@@ -16,6 +16,10 @@ export class DataService {
     private _isLoggedIn = new BehaviorSubject<Boolean>(false)
     isLoggedIn = this._isLoggedIn.asObservable();
 
+    // private _out = new BehaviorSubject<Boolean>(true)
+    // out = this._out.asObservable();
+
+
     private _products = [
         {
             productTitle: "X Rocker X-Pro 300 Black Pedestal Gaming Chair Rocker with Built-in Speakers",
@@ -365,6 +369,10 @@ export class DataService {
         this._isLoggedIn.next(isLoggedIn)
     }
 
+    // toggleOut(out: Boolean) {
+    //     this._out.next(out)
+    // }
+  
     getData(){
         return this._data;
     }
