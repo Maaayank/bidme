@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HomepageComponent } from './components/homepage/homepage.component';
 
 import { SocialLoginModule } from 'angularx-social-login';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -35,7 +36,11 @@ import { SocialLoginModule } from 'angularx-social-login';
     SocialLoginModule,
     ToastrModule.forRoot({ "positionClass": "toast-bottom-right" }),
     BrowserAnimationsModule,
-    SocialLoginModule
+    SocialLoginModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAR2KkBPJU3mIcElCXDENPXTSk9Rt2WHZM',
+      libraries: ['places']
+    })
   ],
   providers: [UserService],
   bootstrap: [AppComponent]
