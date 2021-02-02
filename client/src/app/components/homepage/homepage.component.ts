@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild,ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from '../../services/data.service'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MapsAPILoader,MouseEvent } from '@agm/core';
+import { MapsAPILoader, MouseEvent } from '@agm/core';
 
 @Component({
   selector: 'app-homepage',
@@ -11,15 +11,21 @@ import { MapsAPILoader,MouseEvent } from '@agm/core';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+
   latitude: number;
   longitude: number;
-  zoom:number;
+  zoom: number;
   address: string;
+
   private geoCoder;
+
   @ViewChild('search')
   public searchElementRef: ElementRef;
-  title:string="";
+
+  title = "hello"
+  example: string = "hello"
   out: Boolean = true;
+
   feature_form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     value: new FormControl('', [Validators.required])
@@ -50,15 +56,15 @@ export class HomepageComponent implements OnInit {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
-          //get the place result
+          // get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          //verify result
+          // verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
 
-          //set latitude, longitude and zoom
+          // set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
           this.zoom = 12;
@@ -85,6 +91,7 @@ export class HomepageComponent implements OnInit {
         }
       )
   }
+
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -158,9 +165,11 @@ export class HomepageComponent implements OnInit {
 
   onNext() {
     this.out = false;
+    console.log(this.title)
     this._user.productSearchByKeywords(this.title).subscribe(
 
       (data: any) => {
+        console.log(data.productsTitles[0])
         this._user.productDetails(data.productsTitles[0].pid).subscribe(
           (data: any) => {
             console.log(data.product);
