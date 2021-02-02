@@ -20,6 +20,7 @@ import { SocialLoginModule } from 'angularx-social-login';
 import { AgmCoreModule } from '@agm/core';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

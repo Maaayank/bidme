@@ -18,7 +18,7 @@ export class HomepageComponent implements OnInit {
   private geoCoder;
   @ViewChild('search')
   public searchElementRef: ElementRef;
-
+  title:string="";
   out: Boolean = true;
   feature_form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -158,7 +158,7 @@ export class HomepageComponent implements OnInit {
 
   onNext() {
     this.out = false;
-    this._user.productSearchByKeywords("HP envy").subscribe(
+    this._user.productSearchByKeywords(this.title).subscribe(
 
       (data: any) => {
         this._user.productDetails(data.productsTitles[0].pid).subscribe(
@@ -183,9 +183,6 @@ export class HomepageComponent implements OnInit {
       }
     )
   }
-
-
-
 }
 
 class Feature {
