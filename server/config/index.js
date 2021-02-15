@@ -26,6 +26,8 @@ module.exports = {
 
     gsignin: {
         client_id: process.env.CLIENT_ID || ''
-    }
+    },
+
+    feedsUpdatedAt: 0
 
 };

@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.use(cors({
-    origin: 'http://127.0.0.1:4200',
+    origin: true,
     credentials: true
 }))
 

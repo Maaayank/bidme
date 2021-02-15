@@ -10,7 +10,7 @@ export class UserService {
   url: string = 'http://127.0.0.1:3000';
   product_api: string = "https://product-info-api.herokuapp.com/api"
 
-  constructor(private _http: HttpClient, private _dataService: DataService) { }
+  constructor(private _http: HttpClient) { }
 
   register(body: any) {
     return this, this._http.post(this.url + '/api/auth/signup', body, {

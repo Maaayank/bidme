@@ -14,10 +14,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 
-import { HomepageComponent } from './components/homepage/homepage.component';
+import { HomepageComponent } from './components/home/homepage/homepage.component';
 
 import { SocialLoginModule } from 'angularx-social-login';
 import { AgmCoreModule } from '@agm/core';
+import { FeedsComponent } from './components/feeds/feeds.component';
+import { FeedsService } from './services/feeds.service';
+import { BaseformComponent } from './components/home/baseform/baseform.component';
+import { ExpandedFormComponent } from './components/home/expandedform/expandedform.component';
 
 
 
@@ -26,7 +30,10 @@ import { AgmCoreModule } from '@agm/core';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomepageComponent
+    HomepageComponent,
+    FeedsComponent,
+    BaseformComponent,
+    ExpandedFormComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +50,7 @@ import { AgmCoreModule } from '@agm/core';
       libraries: ['places']
     })
   ],
-  providers: [UserService],
+  providers: [UserService, FeedsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

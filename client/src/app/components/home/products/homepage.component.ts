@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { DataService } from '../../services/data.service'
+import { DataService } from '../../../services/data.service'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 
@@ -36,8 +36,14 @@ export class HomepageComponent implements OnInit {
   })
 
 
-  data = {}
-  products = []
+  data: Data = {
+    productDetails: [],
+    productTitle: null,
+    productHiglight: [],
+    manufacturer: null,
+    price: null
+  }
+
 
   constructor(
     private _user: UserService,
@@ -71,7 +77,6 @@ export class HomepageComponent implements OnInit {
         });
       });
     });
-    console.log(this.products)
 
     this._user.profile()
       .subscribe(
@@ -131,8 +136,6 @@ export class HomepageComponent implements OnInit {
 
   addFeature() {
 
-    !('productDetails' in this.data) && (this.data.productDetails = [])
-
     this.data.productDetails.push(this.feature_form.value)
     this.feature_form.setValue({
       name: "",
@@ -141,8 +144,6 @@ export class HomepageComponent implements OnInit {
   }
 
   addHighlight() {
-
-    !('productHiglight' in this.data) && (this.data.productHiglight = [])
 
     this.data.productHiglight.push(this.highlights_form.value.highlight)
 
@@ -197,4 +198,12 @@ export class HomepageComponent implements OnInit {
 class Feature {
   name: string;
   value: string
+}
+
+class Data {
+  productTitle: String;
+  productHiglight: String[];
+  productDetails: String[];
+  price: String;
+  manufacturer: String
 }

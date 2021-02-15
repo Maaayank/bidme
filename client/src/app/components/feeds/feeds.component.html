@@ -1,0 +1,28 @@
+<div class="col-sm-12 col-md-9 col-lg-6  feed-container" style="position: absolute; top: 0; right:0;"
+    *ngIf="feedVisible">
+    <div class="container-fluid card feed-card" style="height: 87vh; overflow: hidden;">
+        <div class="row">
+            <span class="col" style="font-size:  20px;"><i><b>Feeds</b></i></span>
+            <div class="col"></div>
+            <img src="https://img.icons8.com/material/50/000000/delete-sign.png"
+                style="margin: 5px; cursor: pointer; height: 20px; width: 20px;" (click)="toggleFeed()" />
+        </div>
+        <div style="margin: 5px 1px 5px 1px; background-color: gray; height: 2px;"></div>
+        <div class="container-fluid"
+            style="padding: 5px 25px 5px 5px; height: 100%; overflow-y: auto; box-sizing: content-box;">
+            <div class="load-1" *ngIf="feedsLoading">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="card" style="width: 100%; margin-bottom: 10px;" *ngFor="let feed of feeds let i = index">
+                <div class="card-body">
+                    <h5 class="card-title">{{feed.title}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{feed.pub_date}}</h6>
+                    <p class="card-text">{{feed.description}}</p>
+                    <a href="{{feed.link}}" class="card-link">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

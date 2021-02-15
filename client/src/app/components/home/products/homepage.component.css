@@ -1,0 +1,7 @@
+.my-style {
+    box-shadow: 10px 0 20px 0 rgba(100, 100, 100, 0.26);
+  }
+
+  agm-map {
+    height: 300px;
+}

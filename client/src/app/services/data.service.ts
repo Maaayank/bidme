@@ -16,9 +16,8 @@ export class DataService {
     private _isLoggedIn = new BehaviorSubject<Boolean>(false)
     isLoggedIn = this._isLoggedIn.asObservable();
 
-    // private _out = new BehaviorSubject<Boolean>(true)
-    // out = this._out.asObservable();
-
+    private _feed = new BehaviorSubject<Boolean>(false)
+    feed = this._feed.asObservable();
 
     private _products = [
         {
@@ -323,37 +322,6 @@ export class DataService {
         }
     ]
 
-    private _data = {
-        productTitle: "X Rocker X-Pro 300 Black Pedestal Gaming Chair Rocker with Built-in Speakers",
-        manufacturer: "X Rocker ",
-        price: 108,
-        productHighlights: [
-            "Dimensions: 27.36L x 22.44W x 19.69H in",
-            "Long-lasting plastic frame",
-            "Breathable black fabric",
-            "Swivel and rocker pedestal base",
-            "Bluetooth speakers and subwoofer"
-        ],
-        productDetails: [
-            {
-                "name": "Brand",
-                "value": "X Rocker"
-            },
-            {
-                "name": "Age Group",
-                "value": "Adult Teen Child"
-            },
-            {
-                "name": "Features",
-                "value": "2 speakers for total immersion surround sound Powerful subwoofer Built-in Bluetooth"
-            },
-            {
-                "name": "Color",
-                "value": "Black"
-            }
-        ]
-    }
-
     constructor() {
     }
 
@@ -369,12 +337,8 @@ export class DataService {
         this._isLoggedIn.next(isLoggedIn)
     }
 
-    // toggleOut(out: Boolean) {
-    //     this._out.next(out)
-    // }
-  
-    getData(){
-        return this._data;
+    toggleFeed(feedVisibility: Boolean){
+        this._feed.next(feedVisibility)
     }
 
     getProducts(){

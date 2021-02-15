@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
@@ -21,12 +21,12 @@ export class LoginComponent implements OnInit {
   });
 
   get email() { return this.loginForm.get('email') }
+  
   constructor(
     private _router: Router,
     private _user: UserService,
     private _toastr: ToastrService,
     private _dataService: DataService,
-    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {

@@ -1,0 +1,100 @@
+<div>
+  <button class="btn btn-danger" (click)="productChange()" >Submit</button>
+  <div class="form-group">
+    <label for="productTitle">Title</label>
+    <input [(ngModel)]="product.productTitle" type="text" class="form-control" id="productTitle">
+  </div>
+  <div class="form-group">
+    <label for="productDescription">Description</label>
+    <textarea type="text" class="form-control" id="productDescription"></textarea>
+  </div>
+  <div class="form-group row">
+    <div class="col-12 col-sm-6 col-lg-6">
+      <label for="manufacturedBy">Manufactured by</label>
+      <input [(ngModel)]="product.manufacturer" type="text" class="form-control" id="manufacturedBy" placeholder="">
+    </div>
+    <div class="col-12 col-sm-6 col-lg-6" *ngIf="product.price">
+      <label class="block" for="flipkartPrice">Flipkart Price<a style="cursor: pointer; margin-left: 20px;"
+          (click)="removeField('price')"><img
+            src="https://img.icons8.com/material-rounded/24/fa314a/filled-trash.png" /></a></label>
+
+      <span class="border rounded border-success " id="flipkartPrice"
+        style="padding:5px 10px 5px 10px; display: block; ">{{product.price}}</span>
+    </div>
+
+  </div>
+  <form [formGroup]="highlights_form">
+    <div class="form-group  row">
+
+      <div class="col-12 col-sm-12 col-lg-12"><label>Product Highlights</label></div>
+
+      <div class="col-12 col-sm-10 col-lg-10">
+        <input formControlName="highlight" type="text" class="form-control" required>
+      </div>
+      <div class="col-12 col-sm-2 col-lg-2">
+        <button [disabled]="highlights_form.invalid" (click)="addHighlight()" type="submit"
+          class="btn float-left btn-primary">Add</button>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-12 col-sm-12 col-lg-12">
+      <div class=" my-style rounded" style="margin-top:10px; margin-right: 10px; display: inline-block; padding: 10px;"
+        *ngFor=" let highlight of product.productHiglight; let i = index">
+
+        <span class=" border  border-primary rounded text-primary card-body"
+          style="padding-top: 5px; padding-left:10px; padding-bottom:5px; padding-right: 10px; display: inline-block;"><b>{{highlight}}</b></span>
+
+        <a style="cursor: pointer; margin-left: 20px; display:inline-block;" (click)="removeHighLight(i)"><img
+            src="https://img.icons8.com/material-rounded/24/fa314a/filled-trash.png" /></a>
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="feature_form">
+    <div class="form-group  row">
+      <div class="col-12 col-sm-12 col-lg-12 p-3">
+        <label for="exampleInputEmail1">Add Features</label>
+      </div>
+
+      <div class="col-12 col-sm-10 col-lg-10 form-inline">
+        <input formControlName="name" type="text" class="form-control" placeholder="Feature" required>
+        <p class="p-2 m-2">:</p><input formControlName="value" type="text" class="form-control" placeholder="Value"
+          required>
+      </div>
+
+
+      <div class="col-12 col-sm-2 col-lg-2">
+        <button [disabled]="feature_form.invalid" (click)="addFeature()" type="submit"
+          class="btn float-left btn-primary">Add</button>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-12 col-sm-12 col-lg-12">
+      <div class=" my-style rounded" style="margin-top:10px; margin-right: 10px; display: inline-block; padding: 10px;"
+        *ngFor="let feature of product.productDetails; let i = index">
+        <span class=" border  border-primary rounded text-primary card-body"
+          style="padding-top: 5px; padding-left:10px; padding-bottom:5px; padding-right: 10px; display: inline-block;"><b>{{feature.name}}</b></span>
+        :
+        <input class=" text-success rounded border border-success" placeholder="enter value" [(ngModel)]="feature.value"
+          style="padding-top: 5px; padding-left:10px; padding-bottom:5px; padding-right: 5px; display: inline-block;" />
+        <a style="cursor: pointer; margin-left: 20px; display:inline-block;" (click)="removeFeature(i)"><img
+            src="https://img.icons8.com/material-rounded/24/fa314a/filled-trash.png" /></a>
+      </div>
+    </div>
+  </div>
+  <div class="row my-style">
+    <div class="col-12 col-sm-12 col-lg-12">
+      <div class="form-group">
+        <label>Enter address</label>
+        <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+          placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
+          #search>
+      </div>
+      <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+          (dragEnd)="markerDragEnd($event)"></agm-marker>
+      </agm-map>
+    </div>
+  </div>
+</div>
