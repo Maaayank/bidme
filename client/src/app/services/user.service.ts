@@ -50,7 +50,7 @@ export class UserService {
     })
   }
 
-  productTitles(){
+  productTitles() {
     return this._http.get(this.product_api + '/titles', {
       observe: 'body',
       withCredentials: false,
@@ -58,7 +58,7 @@ export class UserService {
     })
   }
 
-  productSearchByKeywords(keyword){
+  productSearchByKeywords(keyword) {
     let params = new HttpParams().set('keyword', keyword);
     return this._http.get(this.product_api + '/search', {
       params: params,
@@ -68,12 +68,20 @@ export class UserService {
     })
   }
 
-  productDetails(pid){
+  productDetails(pid) {
     return this._http.get(this.product_api + '/search/' + pid, {
       observe: 'body',
       withCredentials: false,
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     })
+  }
+
+  submitProduct(details) {
+    return this._http.post(this.url + '/api/product/new', details, {
+      observe: 'body',
+      withCredentials: true,
+      headers: new HttpHeaders().append('Content-Type', 'application/json').append('Access-Control-Allow-Origin', '/')
+    });
   }
 
 }

@@ -15,7 +15,7 @@ export class ExpandedFormComponent implements OnInit {
   zoom: number;
   address: string;
 
-  private geoCoder;
+  private geoCoder; 
 
   @ViewChild('search')
   public searchElementRef: ElementRef;
@@ -31,7 +31,7 @@ export class ExpandedFormComponent implements OnInit {
 
   @Input('product')
   product: Product;
-  
+
   @Output() submit: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -105,7 +105,11 @@ export class ExpandedFormComponent implements OnInit {
 
   addFeature() {
 
-    this.product.productDetails.push(this.feature_form.value)
+    if (this.product['productFeatures'] == undefined) {
+      this.product.productFeatures = []
+    }
+
+    this.product.productFeatures.push(this.feature_form.value)
     this.feature_form.setValue({
       name: "",
       value: ""
@@ -114,15 +118,18 @@ export class ExpandedFormComponent implements OnInit {
 
   addHighlight() {
 
-    this.product.productHiglight.push(this.highlights_form.value.highlight)
+    if (this.product['productHiglight'] == undefined) {
+      this.product.productHiglight = []
+    }
 
+    this.product.productHiglight.push(this.highlights_form.value.highlight)
     this.highlights_form.setValue({
       highlight: ""
     })
   }
 
   removeFeature(i) {
-    this.product.productDetails.splice(i, 1);
+    this.product.productFeatures.splice(i, 1);
   }
 
   removeField(key: string) {
@@ -133,15 +140,16 @@ export class ExpandedFormComponent implements OnInit {
     this.product.productHiglight.splice(i, 1)
   }
 
-  productChange(){
+  productChange() {
     this.submit.emit(this.product)
   }
 }
 
-class Product {
+interface Product {
   productTitle: String;
   productHiglight: String[];
-  productDetails: String[];
+  productFeatures: JSON[];
   price: String;
-  manufacturer: String
+  manufacturer: String;
+  description: String
 }

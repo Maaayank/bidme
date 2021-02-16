@@ -12,7 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 import { HomepageComponent } from './components/home/homepage/homepage.component';
 
@@ -45,6 +45,7 @@ import { ExpandedFormComponent } from './components/home/expandedform/expandedfo
     ToastrModule.forRoot({ "positionClass": "toast-bottom-right" }),
     BrowserAnimationsModule,
     SocialLoginModule,
+    AutocompleteLibModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAR2KkBPJU3mIcElCXDENPXTSk9Rt2WHZM',
       libraries: ['places']

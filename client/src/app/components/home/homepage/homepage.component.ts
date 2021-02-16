@@ -13,14 +13,20 @@ export class HomepageComponent implements OnInit {
   out: Boolean = true;
 
   product: Product = {
-    productDetails: [],
+    productFeatures: [],
     productTitle: null,
     productHiglight: [],
     manufacturer: null,
+    description: "",
     price: null
   }
 
-  details = {}
+  details: Details = {
+    auctionAmount: 0,
+    startsAt: null,
+    endsAt: null,
+    title: ""
+  }
 
 
   constructor(
@@ -57,24 +63,49 @@ export class HomepageComponent implements OnInit {
   }
 
   onNext(details: any) {
+    console.log(details)
     this.details = details
     this.out = false;
-    this._user.productSearchByKeywords(details.title).subscribe(
-      (data: any) => {
-        if (data.productsTitles.length == 0) {
-          this._toastr.error("", "no matching product found")
-        } else {
-          this._user.productDetails(data.productsTitles[0].pid).subscribe(
-            (data: any) => {
-              this.product = data.product
-              this._toastr.success("", "Details Fetched")
-            },
 
-            error => {
-              this._toastr.error("", error.error.msg)
-            }
-          )
+    if (details.title == details.selectedProduct) {
+      this._toastr.warning("", "Fetching Details")
+
+      this._user.productDetails(details.selectedProduct.pid).subscribe(
+
+        (data: any) => {
+          this.product.productTitle = data.product.productTitle
+          this.product.price = data.product.price
+          this.product.productHiglight = data.product.productHiglight
+          this._toastr.success("", "Details Fetched")
+        },
+        
+        error => {
+          this._toastr.error("", error.error.msg)
         }
+      )
+    } else {
+      this.product.productTitle = details.title
+    }
+  }
+
+  submit(productDetails) {
+    var data = {
+      price: productDetails.price,
+      productHiglight: productDetails.productHiglight,
+      productFeatures: productDetails.productFeatures,
+      productTitle: productDetails.productTitle,
+      manufacturer: productDetails.manufacturer,
+      productDescription: productDetails.description,
+      auctionAmount: this.details.auctionAmount,
+      startsAt: this.details.startsAt,
+      endsAt: this.details.endsAt,
+    }
+
+    console.log(data)
+
+    this._user.submitProduct(data).subscribe(
+      (data: any) => {
+        this._toastr.success("", data.msg)
       },
 
       error => {
@@ -82,16 +113,20 @@ export class HomepageComponent implements OnInit {
       }
     )
   }
-
-  submit(productDetails){
-    console.log(productDetails,this.details)
-  }
 }
 
-class Product {
+interface Details {
+  auctionAmount: Number;
+  startsAt: Date;
+  endsAt: Date;
+  title: String;
+}
+
+interface Product {
   productTitle: String;
   productHiglight: String[];
-  productDetails: String[];
+  productFeatures: JSON[];
   price: String;
-  manufacturer: String
+  manufacturer: String;
+  description: String
 }
