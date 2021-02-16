@@ -11,7 +11,7 @@ module.exports = {
         } else {
             return {
                 nomore: false,
-                data: result.toArray()
+                data: await result.toArray()
             }
         }
     },
@@ -22,11 +22,23 @@ module.exports = {
 
         if (result == null) {
             let e = new Error()
-            e.message = `Didn't found product`
+            e.message = `Product doesn't exist`
             e.code = `401`
             throw e
         } else {
             return result
+        }
+    },
+
+    newProduct: async (db, details) => {
+        const products = db.collection('products')
+        const result = await products.insertOne(details)
+
+        if(result != null){
+            let e = new Error()
+            e.message = `Didn't found product`
+            e.code = `404`
+            throw e
         }
     }
 }
