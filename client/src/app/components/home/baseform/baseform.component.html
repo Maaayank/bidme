@@ -2,7 +2,7 @@
   <h3 class="text-center p-4">Product Details</h3>
   <div class="ng-autocomplete form-group">
     <label for="title">Title</label>
-    <ng-autocomplete class="form-control " id="title" formControlName="title" [data]="data" [searchKeyword]="keyword"
+    <ng-autocomplete  id="title" formControlName="title" [data]="data" [searchKeyword]="keyword"
       (selected)='selectEvent($event)' [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
     </ng-autocomplete>
 

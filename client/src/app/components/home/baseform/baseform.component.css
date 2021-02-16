@@ -5,3 +5,6 @@
   agm-map {
     height: 300px;
 }
+.ng-autocomplete{
+  width : 100% ;
+}
