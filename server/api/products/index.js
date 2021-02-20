@@ -1,5 +1,5 @@
-const router = require('express').Router()
-const validateToken = require('../middlewares').validateToken
+var router = require('express').Router()
+const validateToken = require('../../middlewares').validateToken
 const dbService = require('../../database').services
 const client = require('../../database').client
 
@@ -99,3 +99,5 @@ router.get('/:page/all', async (req, res) => {
         }
     }
 })
+
+module.exports = router

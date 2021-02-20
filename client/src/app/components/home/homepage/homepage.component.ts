@@ -68,7 +68,7 @@ export class HomepageComponent implements OnInit {
     this.out = false;
 
     if (details.title == details.selectedProduct) {
-      this._toastr.warning("", "Fetching Details")
+      this._toastr.info("", "Fetching Details")
 
       this._user.productDetails(details.selectedProduct.pid).subscribe(
 
@@ -89,6 +89,7 @@ export class HomepageComponent implements OnInit {
   }
 
   submit(productDetails) {
+    
     var data = {
       price: productDetails.price,
       productHiglight: productDetails.productHiglight,

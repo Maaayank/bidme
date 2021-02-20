@@ -22,7 +22,7 @@ import { FeedsComponent } from './components/feeds/feeds.component';
 import { FeedsService } from './services/feeds.service';
 import { BaseformComponent } from './components/home/baseform/baseform.component';
 import { ExpandedFormComponent } from './components/home/expandedform/expandedform.component';
-
+import { ProductsComponent } from './components/home/products/products.component';
 
 
 @NgModule({
@@ -33,7 +33,8 @@ import { ExpandedFormComponent } from './components/home/expandedform/expandedfo
     HomepageComponent,
     FeedsComponent,
     BaseformComponent,
-    ExpandedFormComponent
+    ExpandedFormComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,

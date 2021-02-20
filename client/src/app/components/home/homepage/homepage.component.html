@@ -1,9 +1,8 @@
 <div class="container-fluid">
-  <div class="row">
-    <homepage-baseform (onNext)="onNext($event)" (clearAll)="onClear()" class="col-12 col-sm-4 col-lg-4 my-style rounded" style="margin: 20px 0 10px 0;"></homepage-baseform>
-    <div class="col-12 col-sm-8 col-lg-8 my-style rounded" style="margin: 20px 0 10px 0;" *ngIf='out'>
-      <p>we r here</p>
-    </div>
-    <homepage-expandedform [product]="product" (submit)="submit($event)" class="col-12 col-sm-8 col-lg-8 my-style rounded" style="margin: 20px 0 10px 0;" *ngIf='!out'></homepage-expandedform>
+  <div class="row" style="height: 91vh; overflow: auto;">
+    <homepage-baseform (onNext)="onNext($event)" (clearAll)="onClear()" class="col-12 col-sm-4 col-lg-4 pad-10" ></homepage-baseform>
+    <homepage-products class="col-12 col-sm-8 col-lg-8  rounded pad-10"  *ngIf='out'>
+    </homepage-products>
+    <homepage-expandedform [product]="product" (submitProduct)="submit($event)" class="col-12 col-sm-8 col-lg-8 rounded pad-10"*ngIf='!out'></homepage-expandedform>
   </div>
-</div>
+</div>  

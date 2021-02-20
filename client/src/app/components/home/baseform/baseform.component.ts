@@ -36,7 +36,7 @@ export class BaseformComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this._toastr.warning("", "Initializing....")
+    this._toastr.info("", "Initializing....")
     this._userService.productTitles().subscribe(
       (data: any) => {
         this._toastr.success("", "Ready")

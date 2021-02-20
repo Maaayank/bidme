@@ -32,7 +32,7 @@ export class ExpandedFormComponent implements OnInit {
   @Input('product')
   product: Product;
 
-  @Output() submit: EventEmitter<any> = new EventEmitter();
+  @Output() submitProduct: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private _dataService: DataService,
@@ -141,7 +141,8 @@ export class ExpandedFormComponent implements OnInit {
   }
 
   productChange() {
-    this.submit.emit(this.product)
+    console.log("product change")
+    this.submitProduct.emit(this.product)
   }
 }
 

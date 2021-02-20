@@ -4,11 +4,11 @@
     border-bottom-right-radius: 10px;
 }
 
-#sect1{
+
+
+.sect1{
   width: 100%;
-  padding: 0 7%;
   display: table;
-  margin: 0;
   max-width: none;
   height: 91vh;
 }

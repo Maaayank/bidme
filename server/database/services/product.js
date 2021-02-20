@@ -34,9 +34,9 @@ module.exports = {
         const products = db.collection('products')
         const result = await products.insertOne(details)
 
-        if(result != null){
+        if(result == null){
             let e = new Error()
-            e.message = `Didn't found product`
+            e.message = `Something went wrong !`
             e.code = `404`
             throw e
         }

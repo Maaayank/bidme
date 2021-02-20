@@ -1,10 +1,14 @@
-.my-style {
-    box-shadow: 10px 0 20px 0 rgba(100, 100, 100, 0.26);
-  }
-
-  agm-map {
-    height: 300px;
+.form-card{
+  padding:5%;
+  height: 100%;
+  border-radius: 10px;
+  box-shadow: 10px 0px 20px 0 rgba(100, 100, 100, 0.26);
 }
+
+agm-map {
+  height: 300px;
+}
+
 .ng-autocomplete{
   width : 100% ;
 }
