@@ -1,11 +1,15 @@
 var router = require('express').Router()
-const validateToken = require('../../middlewares').validateToken
+const { validateToken, validateNewProduct} = require('../../middlewares')
+
 const dbService = require('../../database').services
 const client = require('../../database').client
 
-router.post('/new', validateToken, async (req, res) => {
+const { body, validationResult } = require('express-validator');
+
+router.post('/new', validateToken, validateNewProduct, async (req, res) => {
 
     try {
+        
         const db = client.get()
         const details = req.body
         const uid = req.decoded.id

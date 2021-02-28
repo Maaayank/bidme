@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -80,7 +79,7 @@ export class UserService {
     return this._http.post(this.url + '/api/product/new', details, {
       observe: 'body',
       withCredentials: true,
-      headers: new HttpHeaders().append('Content-Type', 'application/json').append('Access-Control-Allow-Origin', '/')
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
 

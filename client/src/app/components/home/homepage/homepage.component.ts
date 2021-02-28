@@ -18,7 +18,8 @@ export class HomepageComponent implements OnInit {
     productHiglight: [],
     manufacturer: null,
     description: "",
-    price: null
+    price: null,
+    images: []
   }
 
   details: Details = {
@@ -89,7 +90,12 @@ export class HomepageComponent implements OnInit {
   }
 
   submit(productDetails) {
-    
+  
+    var images = []
+    productDetails.images.forEach((image: Image) => {
+      images.push(image.path)
+    });
+
     var data = {
       price: productDetails.price,
       productHiglight: productDetails.productHiglight,
@@ -100,9 +106,8 @@ export class HomepageComponent implements OnInit {
       auctionAmount: this.details.auctionAmount,
       startsAt: this.details.startsAt,
       endsAt: this.details.endsAt,
+      images: images
     }
-
-    console.log(data)
 
     this._user.submitProduct(data).subscribe(
       (data: any) => {
@@ -129,5 +134,11 @@ interface Product {
   productFeatures: JSON[];
   price: String;
   manufacturer: String;
-  description: String
+  description: String;
+  images: Image[]
+}
+
+interface Image {
+  url: String,
+  path: String
 }

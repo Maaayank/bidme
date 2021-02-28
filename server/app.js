@@ -1,12 +1,13 @@
-const database = require('./database').client;
-const express = require('express');
+const database = require('./database').client
+const express = require('express')
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const PORT = require('./config').development.port
 const logs = require('./config').logs
-const path = require('path');
+const path = require('path')
+const multer = require('multer')
 
 require('dotenv').config()
 

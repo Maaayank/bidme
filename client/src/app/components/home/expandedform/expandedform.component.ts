@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, NgZone, Output, Input, EventE
 import { DataService } from '../../../services/data.service'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
+import { ToastrService } from 'ngx-toastr';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'homepage-expandedform',
@@ -37,7 +39,9 @@ export class ExpandedFormComponent implements OnInit {
   constructor(
     private _dataService: DataService,
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private _toastr: ToastrService,
+    private _firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
@@ -144,6 +148,48 @@ export class ExpandedFormComponent implements OnInit {
     console.log("product change")
     this.submitProduct.emit(this.product)
   }
+
+  addImage(data){
+
+    const files = data.target.files
+    const file: File = files[0]
+    const path = `/temp/${file.name}`
+
+    if(this.product.images.length < 5){
+      if( file.size < 5*1024*1024 ){
+
+        this._toastr.info(`Uploading ${file.name}`)
+        this._firebaseService.uploadFile(path, file).then(
+
+          (res:String)  => {
+            console.log(res)
+            var newImage: Image = {
+              url: res,
+              path: path
+            }
+
+            this.product.images.push(newImage)
+          },
+
+          (err:any) => {
+            console.log(err)
+            this._toastr.error(`Error while uploading ${file.name}`)
+          }
+
+        )
+      }else{
+        this._toastr.error("Please Upload an Image of size less than 5MB")
+      }
+    }else{
+      this._toastr.error("Max 5 images allowed ")
+    }
+  }
+
+  removeImage(i){
+    this._firebaseService.deleteFile(this.product.images[i].path)
+    this.product.images.splice(i, 1)
+  }
+
 }
 
 interface Product {
@@ -152,5 +198,11 @@ interface Product {
   productFeatures: JSON[];
   price: String;
   manufacturer: String;
-  description: String
+  description: String;
+  images: Image[]
+}
+
+interface Image {
+  url: String,
+  path: String
 }

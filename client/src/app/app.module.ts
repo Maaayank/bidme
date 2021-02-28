@@ -24,6 +24,12 @@ import { BaseformComponent } from './components/home/baseform/baseform.component
 import { ExpandedFormComponent } from './components/home/expandedform/expandedform.component';
 import { ProductsComponent } from './components/home/products/products.component';
 
+// firebase libs
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
+//environments
+import { environment } from '../environments/environment'
 
 @NgModule({
   declarations: [
@@ -47,6 +53,8 @@ import { ProductsComponent } from './components/home/products/products.component
     BrowserAnimationsModule,
     SocialLoginModule,
     AutocompleteLibModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAR2KkBPJU3mIcElCXDENPXTSk9Rt2WHZM',
       libraries: ['places']

@@ -12,6 +12,33 @@
   overflow: hidden;
 }
 
+.img-card{
+  display: inline-block;
+  float: none;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.img-scroll {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: block;
+}
+
+.img-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.img-scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 agm-map{
   height:100%;
   width:100%

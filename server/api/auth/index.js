@@ -9,37 +9,34 @@ const jwt_secret = require('../../config').jwt.jwt_secret
 const salting = require('../../config').jwt.salting_rounds
 const CLIENT_ID = require('../../config').gsignin.client_id
 
+const validateLogin = require('../../middlewares').validateLogin
+const validateSignup = require('../../middlewares').validateSignup
+
+const { validationResult } = require('express-validator');
+
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 
-var validateEmail = (eAdd) => {
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(eAdd);
-}
-
-router.post('/signup', async (req, res) => {
+router.post('/signup', validateSignup, async (req, res) => {
 
     try {
 
         const db = dbClient.get()
         var e = new Error()
 
+        var errors = validationResult(req);
+        if(!errors.isEmpty()){
+            console.log(errors)
+            errors = errors.errors
+            e.code = 401
+            e.message = errors[errors.length - 1].msg
+            throw e
+        }
+
         const email = req.body.email
         const pass = req.body.pass
         const phone = req.body.phone
         const username = req.body.username
-
-        if (email == null || pass == null || username == null) {
-            e.message = `all fields required `
-            e.code = 401
-            throw e
-        }
-
-        if (!validateEmail(email)) {
-            e.message = `incorrect email address ${email}`
-            e.code = 401
-            throw e
-        }
 
         const hash_pass = await bcrypt.hash(pass, salting)
         const uid = Math.floor(Math.random() * 99745 + Math.random() * 5434)
@@ -80,26 +77,22 @@ router.post('/signup', async (req, res) => {
 });
 
 
-router.post('/login', async (req, res) => {
+router.post('/login', validateLogin, async (req, res) => {
     try {
 
         var e = new Error()
 
+        var errors = validationResult(req);
+        if(!errors.isEmpty()){
+            errors = errors.errors
+            e.code = 401
+            e.message = errors[errors.length - 1].msg
+            throw e
+        }
+
         const db = dbClient.get()
         const email = req.body.email
         const pass = req.body.pass
-
-        if (email == null || pass == null) {
-            e.message = `fields required`
-            e.code = 401
-            throw e
-        }
-
-        if (!validateEmail(email)) {
-            e.message = `incorrect email address ${email}`
-            e.code = 401
-            throw e
-        }
 
         const result = await services.getUser(db, email)
 

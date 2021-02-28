@@ -1,3 +1,6 @@
 module.exports = {
-    validateToken: require('./validatetoken')
+    validateToken: require('./validatetoken'),
+    validateNewProduct: require('./validateNewProductInput'),
+    validateLogin: require('./validateLoginInput'),
+    validateSignup: require('./validateSignupInput')
 }
