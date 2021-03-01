@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HAMMER_LOADER } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -18,6 +17,9 @@ export class DataService {
 
     private _feed = new BehaviorSubject<Boolean>(false)
     feed = this._feed.asObservable();
+
+    private _ftoken = new BehaviorSubject<any>({})
+    ftoken = this._ftoken.asObservable();
 
     private _products = [
         {
@@ -343,5 +345,9 @@ export class DataService {
 
     getProducts(){
         return this._products;
+    }
+
+    changeFtoken(ftoken: any){
+        this._ftoken.next(ftoken)
     }
 }

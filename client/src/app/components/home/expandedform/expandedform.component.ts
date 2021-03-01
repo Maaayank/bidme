@@ -1,26 +1,17 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone, Output, Input, EventEmitter } from '@angular/core';
-import { DataService } from '../../../services/data.service'
+import { Component, OnInit, Output, Input, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { ToastrService } from 'ngx-toastr';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UserService } from 'src/app/services/user.service';
+
+declare const L: any;
 
 @Component({
   selector: 'homepage-expandedform',
   templateUrl: './expandedform.component.html',
   styleUrls: ['./expandedform.component.css']
 })
-export class ExpandedFormComponent implements OnInit {
-
-  latitude: number;
-  longitude: number;
-  zoom: number;
-  address: string;
-
-  private geoCoder; 
-
-  @ViewChild('search')
-  public searchElementRef: ElementRef;
+export class ExpandedFormComponent implements OnInit, AfterViewInit {
 
   feature_form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -37,74 +28,43 @@ export class ExpandedFormComponent implements OnInit {
   @Output() submitProduct: EventEmitter<any> = new EventEmitter();
 
   constructor(
-    private _dataService: DataService,
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,
     private _toastr: ToastrService,
-    private _firebaseService: FirebaseService
+    private _firebaseService: FirebaseService,
+    private _user: UserService
   ) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit() {
 
-    this.mapsAPILoader.load().then(() => {
-      this.setCurrentLocation();
-      this.geoCoder = new google.maps.Geocoder;
-
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
-      autocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-          // get the place result
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
-          // verify result
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
-
-          // set latitude, longitude and zoom
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
-        });
-      });
-    });
-
-  }
-
-  private setCurrentLocation() {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 8;
-        this.getAddress(this.latitude, this.longitude);
-      });
+    if (!navigator.geolocation) {
+      console.log("not found!");
     }
-  }
 
-  markerDragEnd($event: MouseEvent) {
-    console.log($event);
-    this.latitude = $event.coords.lat;
-    this.longitude = $event.coords.lng;
-    this.getAddress(this.latitude, this.longitude);
-  }
+    navigator.geolocation.getCurrentPosition((position) => {
+      const coord = position.coords;
+      console.log(`lat:${position.coords.latitude},lon:${position.coords.longitude}`);
+      
+      this._user.mapcall(position.coords.latitude, position.coords.longitude).subscribe((data) => {
+        console.warn("get api data", data);
+      })
 
-  getAddress(latitude, longitude) {
-    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      console.log(results);
-      console.log(status);
-      if (status === 'OK') {
-        if (results[0]) {
-          this.zoom = 12;
-          this.address = results[0].formatted_address;
-        } else {
-          window.alert('No results found');
-        }
-      } else {
-        window.alert('Geocoder failed due to: ' + status);
-      }
+      var mymap = L.map('mapid').setView([coord.latitude, coord.longitude], 13);
+      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2hhc2hhbiIsImEiOiJja2xramhxYnowMTJ4Mm9sbHV0a2thazdlIn0.IVDzeLAlaMW1pJvkAgjnVQ', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'your.mapbox.access.token'
+      }).addTo(mymap);
 
+      L.marker([coord.latitude, coord.longitude]).addTo(mymap);
     });
+
+    this.watchPosition();
+
+  }
+
+  ngOnInit(): void {
   }
 
   addFeature() {
@@ -149,19 +109,19 @@ export class ExpandedFormComponent implements OnInit {
     this.submitProduct.emit(this.product)
   }
 
-  addImage(data){
+  addImage(data) {
 
     const files = data.target.files
     const file: File = files[0]
-    const path = `/temp/${file.name}`
+    const path = `/product/${file.name}`
 
-    if(this.product.images.length < 5){
-      if( file.size < 5*1024*1024 ){
+    if (this.product.images.length < 5) {
+      if (file.size < 5 * 1024 * 1024) {
 
         this._toastr.info(`Uploading ${file.name}`)
         this._firebaseService.uploadFile(path, file).then(
 
-          (res:String)  => {
+          (res: String) => {
             console.log(res)
             var newImage: Image = {
               url: res,
@@ -171,23 +131,38 @@ export class ExpandedFormComponent implements OnInit {
             this.product.images.push(newImage)
           },
 
-          (err:any) => {
+          (err: any) => {
             console.log(err)
             this._toastr.error(`Error while uploading ${file.name}`)
           }
 
         )
-      }else{
+      } else {
         this._toastr.error("Please Upload an Image of size less than 5MB")
       }
-    }else{
+    } else {
       this._toastr.error("Max 5 images allowed ")
     }
   }
 
-  removeImage(i){
+  removeImage(i) {
     this._firebaseService.deleteFile(this.product.images[i].path)
     this.product.images.splice(i, 1)
+  }
+
+  watchPosition() {
+    let desLat = 0;
+    let desLon = 0;
+    let id = navigator.geolocation.watchPosition((position) => {
+      console.log(`lat:${position.coords.latitude},lon:${position.coords.longitude}`);
+      navigator.geolocation.clearWatch(id);
+    }, (err) => {
+      console.log(err);
+    }, {
+      enableHighAccuracy: true,
+      timeout: 1000,
+      maximumAge: 0
+    })
   }
 
 }

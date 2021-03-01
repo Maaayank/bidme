@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage'
+import { AngularFireAuth } from '@angular/fire/auth'
 import { finalize } from 'rxjs/operators'
 
 @Injectable({
@@ -8,10 +9,17 @@ import { finalize } from 'rxjs/operators'
 export class FirebaseService {
 
 
-    constructor(private _store: AngularFireStorage ) { }
+    constructor(private _store: AngularFireStorage , private _auth: AngularFireAuth) { }
+
+    authUser(token: any){
+        this._auth.signInWithCustomToken(token).then(
+            res => { console.log(`firebase auth complete : ${res}`)},
+            err => { console.log(` error ${err}`)}
+        )
+    }
 
     uploadFile( path: string, file: File){
-        
+
         return new Promise<any>( (resolve, reject)=> {
             const task: AngularFireUploadTask = this._store.upload(path, file)
             task.snapshotChanges().pipe(

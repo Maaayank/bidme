@@ -6,8 +6,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const PORT = require('./config').development.port
 const logs = require('./config').logs
-const path = require('path')
-const multer = require('multer')
+const firebase = require('./firebase')
 
 require('dotenv').config()
 
@@ -46,7 +45,7 @@ app.use((req, res) => {
 })
 
 database.connect().then((str) => {
-    console.log(str)
+    firebase.initializeApp()
     app.listen(PORT, () => {
         console.log(`🛡️  Server listening on port: ${PORT}`)
     })

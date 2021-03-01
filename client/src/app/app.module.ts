@@ -17,7 +17,6 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { HomepageComponent } from './components/home/homepage/homepage.component';
 
 import { SocialLoginModule } from 'angularx-social-login';
-import { AgmCoreModule } from '@agm/core';
 import { FeedsComponent } from './components/feeds/feeds.component';
 import { FeedsService } from './services/feeds.service';
 import { BaseformComponent } from './components/home/baseform/baseform.component';
@@ -27,6 +26,7 @@ import { ProductsComponent } from './components/home/products/products.component
 // firebase libs
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth'
 
 //environments
 import { environment } from '../environments/environment'
@@ -55,10 +55,7 @@ import { environment } from '../environments/environment'
     AutocompleteLibModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAR2KkBPJU3mIcElCXDENPXTSk9Rt2WHZM',
-      libraries: ['places']
-    })
+    AngularFireAuthModule,
   ],
   providers: [UserService, FeedsService],
   bootstrap: [AppComponent]

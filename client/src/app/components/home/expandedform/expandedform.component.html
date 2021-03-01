@@ -107,16 +107,9 @@
   <div class="row my-style">
     <div class="col-12 col-sm-12 col-lg-12">
       <div class="form-group">
-        <label>Enter address</label>
-        <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
-          placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
-          #search>
       </div>
-      <div class="map">
-        <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-          <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-            (dragEnd)="markerDragEnd($event)"></agm-marker>
-        </agm-map>
+      <div id="mapid">
+        
       </div>
     </div>
   </div>

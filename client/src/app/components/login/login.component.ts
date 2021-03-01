@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { DataService } from '../../services/data.service'
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 declare var gapi: any;
 
@@ -16,8 +16,10 @@ declare var gapi: any;
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-    pass: new FormControl('', Validators.required)
+    // email: new FormControl('', [Validators.email, Validators.required]),
+    // pass: new FormControl('',[Validators.required,  Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)])
+    email: new FormControl('', []),
+    pass: new FormControl('', [])
   });
 
   get email() { return this.loginForm.get('email') }
@@ -26,7 +28,7 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _user: UserService,
     private _toastr: ToastrService,
-    private _dataService: DataService,
+    private _firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
@@ -45,12 +47,13 @@ export class LoginComponent implements OnInit {
 
         (data: any) => {
           console.log(data);
+          this._firebaseService.authUser(data.ftoken)
           this._router.navigate(['/homepage']);
           this._toastr.success("", data.msg)
         },
 
         error => {
-          console.error(error.error);
+          console.error(error.error.msg);
           this._toastr.error("", error.error.msg)
         }
       )
