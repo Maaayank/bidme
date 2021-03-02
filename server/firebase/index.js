@@ -4,6 +4,7 @@ var serviceAccount = require('../config').serviceAccountKey;
 module.exports = {
 
     initializeApp: () => {
+        console.log(serviceAccount)
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount)
           })

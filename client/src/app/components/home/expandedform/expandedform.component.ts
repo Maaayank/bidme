@@ -35,33 +35,28 @@ export class ExpandedFormComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
 
-    if (!navigator.geolocation) {
-      console.log("not found!");
-    }
-
     navigator.geolocation.getCurrentPosition((position) => {
+
       const coord = position.coords;
       console.log(`lat:${position.coords.latitude},lon:${position.coords.longitude}`);
       
-      this._user.mapcall(position.coords.latitude, position.coords.longitude).subscribe((data) => {
-        console.warn("get api data", data);
-      })
+      this.product.pickup_address.lat = String(coord.latitude)
+      this.product.pickup_address.lon = String(coord.longitude)
+      // this._user.mapcall(coord.latitude, coord.longitude).subscribe((data) => {
+      //   console.warn("get api data", data);
+      // })
 
-      var mymap = L.map('mapid').setView([coord.latitude, coord.longitude], 13);
+      var mymap = L.map('map').setView([coord.latitude, coord.longitude], 13);
       L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2hhc2hhbiIsImEiOiJja2xramhxYnowMTJ4Mm9sbHV0a2thazdlIn0.IVDzeLAlaMW1pJvkAgjnVQ', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
+        maxZoom: 20,
         id: 'mapbox/streets-v11',
         tileSize: 512,
         zoomOffset: -1,
-        accessToken: 'your.mapbox.access.token'
       }).addTo(mymap);
 
       L.marker([coord.latitude, coord.longitude]).addTo(mymap);
+
     });
-
-    this.watchPosition();
-
   }
 
   ngOnInit(): void {
@@ -150,21 +145,6 @@ export class ExpandedFormComponent implements OnInit, AfterViewInit {
     this.product.images.splice(i, 1)
   }
 
-  watchPosition() {
-    let desLat = 0;
-    let desLon = 0;
-    let id = navigator.geolocation.watchPosition((position) => {
-      console.log(`lat:${position.coords.latitude},lon:${position.coords.longitude}`);
-      navigator.geolocation.clearWatch(id);
-    }, (err) => {
-      console.log(err);
-    }, {
-      enableHighAccuracy: true,
-      timeout: 1000,
-      maximumAge: 0
-    })
-  }
-
 }
 
 interface Product {
@@ -174,10 +154,16 @@ interface Product {
   price: String;
   manufacturer: String;
   description: String;
-  images: Image[]
+  images: Image[];
+  pickup_address: Address
 }
 
 interface Image {
   url: String,
   path: String
+}
+
+interface Address {
+  lat: String,
+  lon: String
 }

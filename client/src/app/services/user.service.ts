@@ -83,8 +83,8 @@ export class UserService {
     });
   }
 
-  mapcall(lat,long){
-    return this._http.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=mPozin83OcZiK7houmEyIzfqOIivsCr5&location='+lat+'%2C'+long+'&outFormat=json&thumbMaps=false')
-  }
+  // mapcall(lat,long){
+  //   return this._http.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=mPozin83OcZiK7houmEyIzfqOIivsCr5&location='+lat+'%2C'+long+'&outFormat=json&thumbMaps=false')
+  // }
 
 }

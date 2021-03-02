@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { FirebaseService } from 'src/app/services/firebase.service';
 
 declare var gapi: any;
 
@@ -28,7 +27,6 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _user: UserService,
     private _toastr: ToastrService,
-    private _firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +45,6 @@ export class LoginComponent implements OnInit {
 
         (data: any) => {
           console.log(data);
-          this._firebaseService.authUser(data.ftoken)
           this._router.navigate(['/homepage']);
           this._toastr.success("", data.msg)
         },

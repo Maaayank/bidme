@@ -53,5 +53,5 @@ module.exports = [
     check('images')
         .if(body('images').exists())
         .isArray()
-        .withMessage(`Wrong format for Images`)
+        .withMessage(`Wrong format for Images`),
 ]

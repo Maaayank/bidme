@@ -116,7 +116,7 @@ router.post('/login', validateLogin, async (req, res) => {
                         throw e
                     }
 
-                    firebase.getAccesstoken(uid).then((f_token)=> {
+                    // firebase.getAccesstoken(uid).then((f_token)=> {
 
                         res.status(200).cookie('token', token, {
                             expires: new Date(Date.now() + 1000 * 10 * 24 * 60 * 60),
@@ -124,13 +124,12 @@ router.post('/login', validateLogin, async (req, res) => {
                             httpOnly: true
                         }).json({
                             sucess: true,
-                            ftoken: f_token,
                             msg: `Welcome ${result.username}`
                         })
 
-                    }).catch((err)=>{
-                        throw err
-                    })
+                    // }).catch((err)=>{
+                    //     throw err
+                    // })
                 })
             } else {
                 e.message = `Invalid Credentials`

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from '../../../services/data.service'
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-homepage',
@@ -19,7 +20,8 @@ export class HomepageComponent implements OnInit {
     manufacturer: null,
     description: "",
     price: null,
-    images: []
+    images: [],
+    pickup_address: {lat: '0', lon: '0'}
   }
 
   details: Details = {
@@ -34,6 +36,7 @@ export class HomepageComponent implements OnInit {
     private _user: UserService,
     private _toastr: ToastrService,
     private _dataService: DataService,
+    private _firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +51,10 @@ export class HomepageComponent implements OnInit {
 
           if (data != null && data.msg) {
             this._toastr.success("", data.msg)
+          }
+
+          if(data != null && data.ftoken){
+            this._firebaseService.authUser(data.ftoken)
           }
         },
 
@@ -135,10 +142,16 @@ interface Product {
   price: String;
   manufacturer: String;
   description: String;
-  images: Image[]
+  images: Image[];
+  pickup_address: Address
 }
 
 interface Image {
   url: String,
   path: String
+}
+
+interface Address {
+  lat: String,
+  lon: String
 }

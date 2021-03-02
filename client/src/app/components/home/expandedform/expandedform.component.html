@@ -3,11 +3,11 @@
     <button class="btn btn-danger float-right " (click)="productChange()" >Submit</button>
   </div>
   <div class="form-group ">
-    <label for="productTitle">Title</label>
+    <label for="productTitle"><b>Title</b></label>
     <input [(ngModel)]="product.productTitle" type="text" class="form-control" id="productTitle">
   </div>
   <div class="form-group">
-    <label for="productDescription">Description</label>
+    <label for="productDescription"><b>Description</b></label>
     <textarea type="text" class="form-control" id="productDescription" [(ngModel)] = "product.description"></textarea>
   </div>
   <div class="container" style="height: 150px; width: 100%;">
@@ -23,16 +23,15 @@
           <input #fileInput type="file" accept="image/*" (change)="addImage($event)" style="display:none;" />
           <span >
             <img src="https://img.icons8.com/android/24/ffffff/plus.png" style="margin: 10px;"/>
-            Add Images
+            Add {{ 5 - product.images.length}} Images
           </span>
-          <span class="text-muted">{{ 5 - product.images.length}} more Images can be added.</span>
         </button>
       </div>
     </div>
   </div>
   <div class="form-group row">
     <div class="col-12 col-sm-6 col-lg-6">
-      <label for="manufacturedBy">Manufactured by</label>
+      <label for="manufacturedBy"><b>Manufactured by</b></label>
       <input [(ngModel)]="product.manufacturer" type="text" class="form-control" id="manufacturedBy" placeholder="">
     </div>
     <div class="col-12 col-sm-6 col-lg-6" *ngIf="product.price">
@@ -48,7 +47,7 @@
   <form [formGroup]="highlights_form">
     <div class="form-group  row">
 
-      <div class="col-12 col-sm-12 col-lg-12"><label>Product Highlights</label></div>
+      <div class="col-12 col-sm-12 col-lg-12"><label><b>Product Highlights</b></label></div>
 
       <div class="col-12 col-sm-10 col-lg-10">
         <input formControlName="highlight" type="text" class="form-control" required>
@@ -75,7 +74,7 @@
   <form [formGroup]="feature_form">
     <div class="form-group  row">
       <div class="col-12 col-sm-12 col-lg-12 p-3">
-        <label for="exampleInputEmail1">Add Features</label>
+        <label for="exampleInputEmail1"><b>Add Features</b></label>
       </div>
 
       <div class="col-12 col-sm-10 col-lg-10 form-inline">
@@ -107,9 +106,9 @@
   <div class="row my-style">
     <div class="col-12 col-sm-12 col-lg-12">
       <div class="form-group">
+        <label for="map"><b>Pick Up Point</b></label>
+      <div class="map" id="map">
       </div>
-      <div id="mapid">
-        
       </div>
     </div>
   </div>
