@@ -10,37 +10,53 @@
                 <span class="bg-light">OR</span>
             </p>
             <form [formGroup]="registerForm">
+
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
                     <input formControlName="username" id="exampleInputUsername" name="" class="form-control"
                         placeholder="Username" type="text" required>
+                        <span class="input-group-append bg-white"  *ngIf="username.invalid && username.touched">
+                          <button class="btn border" type="button"><i class="fa fa-info-circle" data-toggle="tooltip"  title={{info.uName}}></i></button>
+                      </span>
                 </div> <!-- form-group// -->
+
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                     </div>
                     <input formControlName="email" type="email" name="" class="form-control" placeholder="Email"
                         id="exampleInputEmail1" required>
+                        <span class="input-group-append bg-white"  *ngIf="email.invalid && email.touched">
+                          <button class="btn border" type="button"><i class="fa fa-info-circle" data-toggle="tooltip"  title={{info.email}}></i></button>
+                      </span>
                 </div> <!-- form-group// -->
                 <!-- form-group// -->
+
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
                     <input formControlName="pass" id="passwordInput" class="form-control" placeholder="Create password"
                         type="password">
+                        <span class="input-group-append bg-white"  *ngIf="pass.invalid && pass.touched">
+                          <button class="btn border" type="button"><i class="fa fa-info-circle" data-toggle="tooltip"  title={{info.pass}}></i></button>
+                      </span>
                 </div> <!-- form-group// -->
+
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
                     <input formControlName="cpass" id="CpasswordInput" class="form-control"
                         placeholder="Repeat password" type="password">
+                        <span class="input-group-append bg-white"   *ngIf="cpass.invalid && cpass.touched">
+                          <button class="btn border" type="button"><i class="fa fa-info-circle" data-toggle="tooltip"  title={{info.pass}}></i></button>
+                      </span>
                 </div> <!-- form-group// -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block" (click)="register()"> Create Account
+                    <button type="submit" class="btn btn-primary btn-block"  [disabled]='registerForm.invalid' (click)="register()"> Create Account
                     </button>
                 </div> <!-- form-group// -->
                 <p class="text-center">Have an account? <a (click)="moveToLogin()"

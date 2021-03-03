@@ -86,7 +86,7 @@ export class HomepageComponent implements OnInit {
           this.product.productHiglight = data.product.productHiglight
           this._toastr.success("", "Details Fetched")
         },
-        
+
         error => {
           this._toastr.error("", error.error.msg)
         }
@@ -97,7 +97,7 @@ export class HomepageComponent implements OnInit {
   }
 
   submit(productDetails) {
-  
+
     var images = []
     productDetails.images.forEach((image: Image) => {
       images.push(image.path)
@@ -111,10 +111,12 @@ export class HomepageComponent implements OnInit {
       manufacturer: productDetails.manufacturer,
       productDescription: productDetails.description,
       auctionAmount: this.details.auctionAmount,
-      startsAt: this.details.startsAt,
-      endsAt: this.details.endsAt,
+      startsAt: this.details.startsAt.getTime(),
+      endsAt: this.details.endsAt.getTime(),
       images: images
     }
+
+
 
     this._user.submitProduct(data).subscribe(
       (data: any) => {

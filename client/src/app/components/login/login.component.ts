@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 declare var gapi: any;
+declare var $: any
 
 @Component({
   selector: 'app-login',
@@ -13,24 +15,32 @@ declare var gapi: any;
 })
 
 export class LoginComponent implements OnInit {
-
+  info:any;
   loginForm: FormGroup = new FormGroup({
-    // email: new FormControl('', [Validators.email, Validators.required]),
-    // pass: new FormControl('',[Validators.required,  Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)])
-    email: new FormControl('', []),
-    pass: new FormControl('', [])
+    email: new FormControl('', [Validators.email, Validators.required]),
+     //pass: new FormControl('',[Validators.required,  Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)])
+    //email: new FormControl('', Validators.required),
+    pass: new FormControl('', [Validators.required,Validators.minLength(8),Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)])
   });
 
   get email() { return this.loginForm.get('email') }
-  
+  get pass() { return this.loginForm.get('pass') }
+
   constructor(
     private _router: Router,
     private _user: UserService,
     private _toastr: ToastrService,
-  ) { }
+    private _firebaseService: FirebaseService
+  ) {
+      this.info={
+        passinfo:'Password should contain First capital letter Password should be of min 8 length Password should contain at least special character and digit',
+        email:'Email is invalid'
+      }
+   }
 
   ngOnInit(): void {
     this.btnRender();
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
 
@@ -39,7 +49,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    
+
     this._user.login(JSON.stringify(this.loginForm.value))
       .subscribe(
 
