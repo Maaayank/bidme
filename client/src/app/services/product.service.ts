@@ -6,7 +6,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class ProductService {
 
-  url: string = "https://540a5a2d797e.ngrok.io"
+  //url: string = "https://540a5a2d797e.ngrok.io"
+  url:string="http://127.0.0.1:3000";
   constructor(private _http: HttpClient) { }
   fetchProduct(){
     return this._http.get(this.url + '/api/product/0/all', {

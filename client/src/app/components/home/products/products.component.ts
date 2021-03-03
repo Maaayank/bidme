@@ -13,6 +13,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 export class ProductsComponent implements OnInit {
   details:any;
   products: Products[] = []
+  image:Image[]=[]
 
   constructor(
     private _user: UserService,
@@ -37,7 +38,11 @@ export class ProductsComponent implements OnInit {
       (data:any)=>{
         console.log(data.products);
         this.products=data.products;
-
+        for(var x of this.products){
+          if('images' in x){
+            this.compute(x);
+          }
+        }
       },(err)=>{
         console.error(err);
       }
@@ -50,7 +55,8 @@ export class ProductsComponent implements OnInit {
     this._fireService.getDownloadUrl(x.images[0]).subscribe(
       (data:any)=>{
         x.images[0]=data;
-        console.log(this.products)
+        this.image=data;
+        console.log(this.image);
       },(err)=>{
         console.error(err);
       }
@@ -60,5 +66,8 @@ export class ProductsComponent implements OnInit {
 
 }
 class Products {
+
+}
+class Image {
 
 }

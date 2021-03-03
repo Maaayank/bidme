@@ -24,7 +24,7 @@ export class FeedsComponent implements OnInit {
         this._feedService.fetchFeeds().subscribe(
 
             (data: any) => {
-              console.log(data);
+              //console.log(data);
                 this.feeds = data.feeds
                 this.feedsLoading = false
             },
