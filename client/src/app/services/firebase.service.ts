@@ -17,7 +17,6 @@ export class FirebaseService {
      }
 
     authUser(token: any){
-        console.log(token)
         this._auth.signInWithCustomToken(token).then(
             res => { console.log(`firebase auth complete : ${res}`)},
             err => { console.log(` error ${err}`)}
@@ -28,11 +27,7 @@ export class FirebaseService {
     uploadFile( path: string, file: File){
 
         return new Promise<any>( (resolve, reject)=> {
-            this._auth.currentUser.then( (res)=> {
-                console.log(res)
-            }).catch((err)=>{
-                console.log(err)
-            })
+
             const task: AngularFireUploadTask = this._store.upload(path, file)
             task.snapshotChanges().pipe(
                 finalize(()=>{

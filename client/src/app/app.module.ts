@@ -29,7 +29,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth'
 
 //environments
-import { environment } from '../environments/environment'
+import { environment } from '../environments/environment';
+import { ErrorpageComponent } from './components/errorpage/errorpage.component'
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { environment } from '../environments/environment'
     FeedsComponent,
     BaseformComponent,
     ExpandedFormComponent,
-    ProductsComponent
+    ProductsComponent,
+    ErrorpageComponent
   ],
   imports: [
     BrowserModule,
