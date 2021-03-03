@@ -24,6 +24,7 @@ export class FeedsComponent implements OnInit {
         this._feedService.fetchFeeds().subscribe(
 
             (data: any) => {
+              console.log(data);
                 this.feeds = data.feeds
                 this.feedsLoading = false
             },
@@ -33,6 +34,8 @@ export class FeedsComponent implements OnInit {
                 console.log(error)
             }
         )
+
+
 
     }
 

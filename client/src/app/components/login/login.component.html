@@ -9,33 +9,29 @@
       <p class="divider-text">
         <span class="bg-light" style="border-radius: 25px;">OR</span>
       </p>
-      <form [formGroup]="loginForm">  
+      <form [formGroup]="loginForm">
+
         <div class="form-group input-group">
           <div class="input-group-prepend">
             <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
           </div>
           <input formControlName="email" name="" class="form-control" id="exampleInputEmail1" placeholder="Email"
             type="email">
-            <br/>
-          <div class="help-block alert alert-danger clearfix" style="float:left; margin-top: 5px; height: 10px; width: 100%;" *ngIf="(email.touched || email.dirty) && (email.errors.required || email.invalid ) ">
-            <span  *ngIf="email.errors.required; else invalidEmail" style="text-align:center; position: relative;">
-              Email Address Required
-            </span>
-            <ng-template #invalidEmail>
-              <span *ngIf="email.invalid" style="text-align:center;">
-                Incorrect Email Address
-              </span>
-            </ng-template>
-          </div>
+            <span class="input-group-append bg-white"  *ngIf="email.invalid && email.touched">
+              <button class="btn border" type="button"><i class="fa fa-info-circle" data-toggle="tooltip"  title={{info.email}}></i></button>
+          </span>
         </div>
+
         <!-- <p>hello</p> -->
         <!-- form-group// -->
-
         <div class="form-group input-group">
           <div class="input-group-prepend">
             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
           </div>
           <input formControlName="pass" id="passwordInput" class="form-control" placeholder="password" type="password">
+          <span class="input-group-append bg-white"  *ngIf="pass.invalid && pass.touched">
+            <button class="btn border" type="button"><i class="fa fa-info-circle" data-toggle="tooltip"  title={{info.passinfo}}></i></button>
+        </span>
           <!-- <span >Email is Required</span><br> -->
 
         </div>
