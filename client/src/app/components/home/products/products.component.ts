@@ -11,63 +11,53 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  details:any;
+  details: any;
   products: Products[] = []
-  image:Image[]=[]
 
   constructor(
     private _user: UserService,
     private _toastr: ToastrService,
     private _dataService: DataService,
-    private _productService:ProductService,
-    private _fireService:FirebaseService
-  ) {
-    this.details={
-      name:'Laptop',
-      amount:'230.00',
-      img:'../../../../assets/abstract-1867838_1920.jpg',
-      features:[
-        '2GB RAM DDR4',
-        '1TB HDD'
-      ]
-    };
-   }
+    private _productService: ProductService,
+    private _fireService: FirebaseService
+  ) { }
 
   ngOnInit(): void {
+    
     this._productService.fetchProduct().subscribe(
-      (data:any)=>{
-        console.log(data.products);
-        this.products=data.products;
-        for(var x of this.products){
-          if('images' in x){
-            this.compute(x);
+      (data: any) => {
+        this.products = data.products;
+        for (var product of this.products) {
+          if ('images' in product) {
+            console.log('yaa hello')
+            this.retrieveDownloadLink(product);
           }
         }
-      },(err)=>{
-        console.error(err);
-      }
-    )
-
-
-
-  }
-  compute(x:any){
-    this._fireService.getDownloadUrl(x.images[0]).subscribe(
-      (data:any)=>{
-        x.images[0]=data;
-        this.image=data;
-        console.log(this.image);
-      },(err)=>{
+      }, (err) => {
         console.error(err);
       }
     )
   }
 
+  retrieveDownloadLink(product: any) {
 
-}
-class Products {
+    if (product.images.length > 0) {
+      console.log('yaa hello again ')
+      this._fireService.getDownloadUrl(product.images[0]).subscribe(
+        (data: any) => {
+          product['image'] = data
+          console.log(this.products);
+        },
 
+        (err) => {
+          console.error(err);
+        }
+      )
+    }
+
+  }
 }
-class Image {
+
+interface Products {
 
 }

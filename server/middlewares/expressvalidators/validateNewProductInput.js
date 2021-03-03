@@ -1,25 +1,21 @@
-const { body, check, validationResult, sanitize, sanitizeBody } = require('express-validator');
+const { body, check, sanitizeBody } = require('express-validator');
 
 module.exports = [
     sanitizeBody(),
-    check('id')
-        .exists()
-        .notEmpty()
-        .withMessage(`Unauthorized User`),
     check('price')
         .if(body('price').exists())
+        .if(body('price').notEmpty())
         .isString()
         .withMessage(`Wrong format for flipkart price`),
     check('productHiglight')
         .if(body('produtHiglight').exists())
+        .if(body('productHiglight').notEmpty())
         .isArray()
         .withMessage(`Wrong format for HighLight`),
     check('productFeatures')
         .if(body('productFeatures').exists())
-        .notEmpty()
+        .if(body('productFeatures').notEmpty())
         .isArray()
-        // .body('productFeatures.*.name').exists().isString().withMessage(`Wrong format for productFeatures`)
-        // .body('productFeatures.*.value').exists().isString().withMessage(`Wrong format for productFeatures`)
         .withMessage(`Wrong format for Features`),
     check('productTitle')
         .exists()
@@ -35,6 +31,7 @@ module.exports = [
         .withMessage(`Wrong format for manufacturer`),
     check('productDescription')
         .if(body('productDescription').exists())
+        .if(body('productDescription').notEmpty())
         .isString()
         .trim()
         .withMessage(`Wrong format for Description`),
@@ -42,16 +39,19 @@ module.exports = [
         .exists()
         .isInt({min: 1})
         .withMessage(`Unacceptable Auction Amount`),
-    check('startAt')
+    check('startsAt')
         .exists()
+        .isNumeric()
         .notEmpty()
         .withMessage('Field required'),
     check('endsAt')
         .exists()
+        .isNumeric()
         .notEmpty()
         .withMessage('Field required'),
     check('images')
         .if(body('images').exists())
+        .if(body('images').notEmpty())
         .isArray()
         .withMessage(`Wrong format for Images`),
 ]

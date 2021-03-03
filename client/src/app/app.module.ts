@@ -26,11 +26,15 @@ import { ProductsComponent } from './components/home/products/products.component
 // firebase libs
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth'
+import { AngularFireAuthModule } from '@angular/fire/auth'
 
 //environments
 import { environment } from '../environments/environment';
 import { ErrorpageComponent } from './components/errorpage/errorpage.component'
+
+//date and time picker
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
 
 @NgModule({
   declarations: [
@@ -58,6 +62,8 @@ import { ErrorpageComponent } from './components/errorpage/errorpage.component'
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     AngularFireAuthModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ],
   providers: [UserService, FeedsService],
   bootstrap: [AppComponent]

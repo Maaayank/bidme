@@ -4,11 +4,22 @@ const { validateToken, validateNewProduct} = require('../../middlewares')
 const dbService = require('../../database').services
 const client = require('../../database').client
 
-const { body, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 
-router.post('/new', validateToken, async (req, res) => {
+router.post('/new', validateToken, validateNewProduct, async (req, res) => {
 
     try {
+
+        const e = new Error()
+        var errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            console.log(errors)
+            errors = errors.errors
+            e.code = 400
+            e.message = errors[errors.length - 1].msg
+            throw e
+        }
 
         const db = client.get()
         const details = req.body
@@ -76,7 +87,7 @@ router.get('/:page/all', async (req, res) => {
 
     try{
         const err = new Error()
-        const page = req.params.page
+        const page = Number(req.params.page)
         const db = client.get()
         const result = await dbService.fetchProducts(db, page)
 

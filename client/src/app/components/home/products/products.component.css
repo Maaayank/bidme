@@ -4,13 +4,21 @@
     border-radius: 10px;
     box-shadow: 10px 0px 20px 0 rgba(100, 100, 100, 0.26);
   }
-  img{
-   box-shadow: 10px 0px 20px 0 rgba(100, 100, 100, 0.26);
-  }
 
   .form-card1{
-    padding:2%;
-    height: 100%;
+    padding:10px;
+    height: auto;
     border-radius: 10px;
-    box-shadow: 10px 10px 20px 10px rgba(100, 100, 100, 0.26);
+    border-color: black;
+    border-width: 20px;
+    background-color: whitesmoke;
+  }
+
+  .img-card {
+    height: 150px;
+    overflow: hidden;
+  }
+
+  img{
+    border-radius: 5px;
   }

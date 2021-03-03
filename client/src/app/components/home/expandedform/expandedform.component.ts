@@ -42,9 +42,7 @@ export class ExpandedFormComponent implements OnInit, AfterViewInit {
       
       this.product.pickup_address.lat = String(coord.latitude)
       this.product.pickup_address.lon = String(coord.longitude)
-      // this._user.mapcall(coord.latitude, coord.longitude).subscribe((data) => {
-      //   console.warn("get api data", data);
-      // })
+
 
       var mymap = L.map('map').setView([coord.latitude, coord.longitude], 13);
       L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2hhc2hhbiIsImEiOiJja2xramhxYnowMTJ4Mm9sbHV0a2thazdlIn0.IVDzeLAlaMW1pJvkAgjnVQ', {

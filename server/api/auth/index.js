@@ -15,7 +15,7 @@ const validateSignup = require('../../middlewares').validateSignup
 const { validationResult } = require('express-validator');
 
 const { OAuth2Client } = require('google-auth-library');
-const  firebase  = require('../../firebase')
+const firebase = require('../../firebase')
 const client = new OAuth2Client(CLIENT_ID);
 
 router.post('/signup', validateSignup, async (req, res) => {
@@ -26,7 +26,7 @@ router.post('/signup', validateSignup, async (req, res) => {
         var e = new Error()
 
         var errors = validationResult(req);
-        if(!errors.isEmpty()){
+        if (!errors.isEmpty()) {
             console.log(errors)
             errors = errors.errors
             e.code = 401
@@ -84,7 +84,7 @@ router.post('/login', validateLogin, async (req, res) => {
         var e = new Error()
 
         var errors = validationResult(req);
-        if(!errors.isEmpty()){
+        if (!errors.isEmpty()) {
             errors = errors.errors
             e.code = 401
             e.message = errors[errors.length - 1].msg
@@ -116,20 +116,15 @@ router.post('/login', validateLogin, async (req, res) => {
                         throw e
                     }
 
-                    // firebase.getAccesstoken(uid).then((f_token)=> {
+                    res.status(200).cookie('token', token, {
+                        expires: new Date(Date.now() + 1000 * 10 * 24 * 60 * 60),
+                        secure: true,
+                        httpOnly: true
+                    }).json({
+                        sucess: true,
+                        msg: `Welcome ${result.username}`
+                    })
 
-                        res.status(200).cookie('token', token, {
-                            expires: new Date(Date.now() + 1000 * 10 * 24 * 60 * 60),
-                            secure: true,
-                            httpOnly: true
-                        }).json({
-                            sucess: true,
-                            msg: `Welcome ${result.username}`
-                        })
-
-                    // }).catch((err)=>{
-                    //     throw err
-                    // })
                 })
             } else {
                 e.message = `Invalid Credentials`

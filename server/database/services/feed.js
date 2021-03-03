@@ -18,12 +18,12 @@ module.exports = {
 
     updateFeeds: async (db, items) => {
 
-        const feeds = db.collection('feeds')
-        const result = await feeds.deleteMany({})
-        if (result != null) {
-            require('../../config').feedsUpdatedAt = Date.now()
-            feeds.insertMany(items)
-        }
+        // const feeds = db.collection('feeds')
+        // const result = await feeds.deleteMany({})
+        // if (result != null) {
+        //     require('../../config').feedsUpdatedAt = Date.now()
+        //     feeds.insertMany(items)
+        // }
     },
 
 }

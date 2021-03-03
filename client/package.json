@@ -13,6 +13,7 @@
   "dependencies": {
     "@agm/core": "1.0.0",
     "@angular/animations": "^9.0.7",
+    "@angular/cdk": "^11.2.2",
     "@angular/common": "~9.0.6",
     "@angular/compiler": "~9.0.6",
     "@angular/core": "~9.0.6",
@@ -25,6 +26,7 @@
     "angularx-social-login": "^3.5.4",
     "firebase": "^8.2.9",
     "i": "^0.3.6",
+    "ng-pick-datetime": "^7.0.0",
     "ngx-toastr": "^13.2.0",
     "npm": "^6.14.11",
     "rxjs": "~6.5.4",
