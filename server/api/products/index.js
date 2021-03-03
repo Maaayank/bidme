@@ -6,10 +6,10 @@ const client = require('../../database').client
 
 const { body, validationResult } = require('express-validator');
 
-router.post('/new', validateToken, validateNewProduct, async (req, res) => {
+router.post('/new', validateToken, async (req, res) => {
 
     try {
-        
+
         const db = client.get()
         const details = req.body
         const uid = req.decoded.id
@@ -44,8 +44,8 @@ router.post('/new', validateToken, validateNewProduct, async (req, res) => {
 router.get('/:pid/info', async (req, res) => {
     try {
 
-        const pid = req.params.pid
-        const err = new Error()
+        const pid = Number(req.params.pid)
+        const err = new Error() 
         const db = client.get()
 
         const result = await dbService.getProductDetails(db, pid)
@@ -56,7 +56,7 @@ router.get('/:pid/info', async (req, res) => {
         })
 
 
-    } catch (e) {
+    } catch (e) {   
         if (e.code == 401) {
             res.status(e.code).json({
                 msg: e.message,
@@ -74,19 +74,21 @@ router.get('/:pid/info', async (req, res) => {
 
 router.get('/:page/all', async (req, res) => {
 
-    try {
+    try{
+        const err = new Error()
         const page = req.params.page
         const db = client.get()
         const result = await dbService.fetchProducts(db, page)
 
-        if (result.nomore) {
+        if (!result.nomore) {
             res.status(200).json({
                 success: true,
                 products: result.data
             })
         } else {
-            e.code = 400
-            e.message = "no more products"
+            err.code = 400
+            err.message = "no more products"
+            throw err
         }
     } catch (e) {
         if (e.code == 400) {

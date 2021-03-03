@@ -2,7 +2,10 @@ module.exports = {
 
     fetchProducts: async (db, page) => {
         const products = db.collection('products')
-        const result = await products.find({ bidEndsAt: { $gt: Date.now() } }).sort({ bidEndsAt: -1 }).skip(page * 10).limit(10).toArray()
+        // bidEndsAt: { $gt: Date.now() } 
+        // .sort({ bidEndsAt: -1 })
+        
+        const result = await products.find().skip(page * 10).limit(10)
 
         if (result == null) {
             return {
@@ -17,8 +20,9 @@ module.exports = {
     },
 
     getProductDetails: async (db, pid) => {
+        console.log(pid)
         const products = db.collection('products')
-        const result = await products.findOne({ pid: pid }, { projection: { _id: 0 } })
+        const result = await products.findOne({ pid: pid })
 
         if (result == null) {
             let e = new Error()
