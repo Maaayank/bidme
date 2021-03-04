@@ -1,37 +1,6 @@
 <div class="container form-card">
-  <div class="row form-card1 m-5" *ngFor="let product of products">
-    <h3 class="">{{product.productTitle}}</h3>
-    <div class="col-12 col-sm-12 col-lg-6 p-5">
-      <img src={{product.image}} width=100%>
-    </div>
-    <div class="col-12 col-sm-12 col-lg-6 ">
-      <div class="row m-3">
-        <div class="col-6 col-sm-6 col-lg-6">
-
-        </div>
-        <div class="col-6 col-sm-6 col-lg-6">
-          <span class="float-right">
-            <img height="25px" width="25px" src="https://img.icons8.com/dusk/64/000000/rupee.png" />
-            <h5>{{product.auctionAmount}}</h5>
-          </span>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-12 col-sm-12 col-lg-12">
-          <p><b>Features</b></p>
-        </div>
-        <div class="col-12 col-sm-12 col-lg-12" *ngFor="let feature of product.productHiglight">
-          <li>{{feature}}</li>
-        </div>
-      </div>
-      <hr>
-      <div class="row m-3">
-        <div class="col-12 col-sm-12 col-lg-12">
-          <button class="btn btn-primary btn-block">BidNow</button>
-        </div>
-      </div>
-
-    </div>
+  <div *ngFor="let product of products">
+    <products-productitem [product]="product">
+    </products-productitem>
   </div>
 </div>
