@@ -7,6 +7,7 @@ const cors = require('cors')
 const PORT = require('./config').development.port
 const logs = require('./config').logs
 const firebase = require('./firebase')
+const socket = require('./socket')
 
 require('dotenv').config()
 
@@ -48,6 +49,7 @@ database.connect().then((str) => {
     firebase.initializeApp()
     app.listen(PORT, () => {
         console.log(`🛡️  Server listening on port: ${PORT}`)
+        socket.connect(app)
     })
 }).catch((e) => {
     console.error(e)
