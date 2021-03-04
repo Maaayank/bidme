@@ -1,22 +1,14 @@
 <div id="content-wrapper">
 
 
-  <div class="column">
-    <img id=featured src="../../assets/shoe1.jpg">
-
+  <div class="column" >
+    <img id=featured src={{data.images[0]}}>
     <div id="slide-wrapper" >
-      <img id="slideLeft" class="arrow" src="../../assets/arrow-left.png">
-
-      <div id="slider">
-        <img class="thumbnail active" src="../../assets/shoe1.jpg">
-        <img class="thumbnail" src="../../assets/shoe2.jpg">
-        <img class="thumbnail" src="../../assets/shoe3.jpg">
-
-        <img class="thumbnail" src="../../assets/preset1.png">
-        <img class="thumbnail" src="../../assets/preset2.jpg">
+      <!-- <img id="slideLeft" class="arrow" src="../../assets/arrow-left.png"> -->
+      <div id="slider" >
+        <img class="thumbnail active" src={{image}} *ngFor="let image of data.images">
       </div>
-
-      <img id="slideRight" class="arrow" src="../../assets/arrow-right.png">
+      <!-- <img id="slideRight" class="arrow" src="../../assets/arrow-right.png"> -->
     </div>
   </div>
 
@@ -42,12 +34,12 @@
 
         </div>
         <div  class="col-12 col-sm-3 shadow-sm p-1 mb-4 bg-white">
-          <button type="button" class="mt-4 float-left btn btn-info"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button> 
+          <button type="button" class="mt-4 float-left btn btn-info"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
         </div>
-        
+
     </div>
     <!-- <br> -->
-      
+
     </div>
     <!-- <div class="container" >
       <div class="row">
@@ -55,10 +47,10 @@
           <p>Timer</p>
         </div>
         <div class = "col-12 col-sm-1 col-md-1">
-          
+
         </div>
         <div class = "col-12 col-sm-7 col-md-7">
-          
+
         </div>
       </div>
 
@@ -71,42 +63,42 @@
 
     <input value=1 type="number">
     <a class="btn btn-dark" href="#">Add to Cart</a> -->
-    
+
   </div>
   <div class="container">
     <div class="row section-box ">
       <div class="col-12 col-sm-6">
       <p><b> Description : </b></p>
       <div class="border shadow-sm p-4 mb-4 bg-white col-sm-12">
-        <p>{{data.productDescription}}</p>  
+        <p>{{data.productDescription}}</p>
       </div>
       </div>
-      
+
   </div>
   <!-- <br> -->
     <div class="row section-box ">
       <div class="col-12 col-sm-12 col-lg-6">
       <p><b> Features : </b></p>
       <div  class="border shadow-sm p-4 mb-4 bg-white col-sm-12">
-      <span *ngFor = "let feature of data.productFeatures"><li>{{feature.name}} : {{feature.value}}</li></span>  
+      <span *ngFor = "let feature of data.productFeatures"><li>{{feature.name}} : {{feature.value}}</li></span>
       </div>
       </div>
-      
+
   </div>
-  
+
   <!-- <br> -->
     <div class="row section-box ">
       <div class="col-12 col-sm-12 col-lg-6">
       <p> <b>Highlights : </b></p>
       <div  class="border shadow-sm p-4 mb-4 bg-white col-sm-12" >
-      <span *ngFor="let prod of data.productHiglight let i=index"><li>{{prod}}</li></span>    
+      <span *ngFor="let prod of data.productHiglight let i=index"><li>{{prod}}</li></span>
       </div>
       </div>
-        
-      
+
+
   </div>
   </div>
 
-  
+
 
 </div>

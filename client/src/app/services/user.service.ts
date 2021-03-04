@@ -6,8 +6,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class UserService {
 
-  // url: string = 'http://127.0.0.1:3000';
-  url: string = "http://74409e0f5623.ngrok.io"
+  url: string = 'http://127.0.0.1:3000';
+  //url: string = "http://74409e0f5623.ngrok.io"
   product_api: string = "https://product-info-api.herokuapp.com/api"
 
   constructor(private _http: HttpClient) { }
