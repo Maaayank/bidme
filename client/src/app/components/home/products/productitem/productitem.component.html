@@ -1,26 +1,24 @@
-<h5  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><b>{{product.productTitle}}</b></h5>
-    <div class="row mt-4">
-      <div class="col-12 col-sm-12 col-lg-6">
-        <img class="rounded" src={{product.image}} width=100% height=100%>
-      </div>
-      <div class="col-12 col-sm-12 col-lg-6">
-        <div class="row p-2">
-          <div class="col-12 col-sm-12 col-lg-12">
-            <p><b>Features</b></p>
-            <hr>
-          </div>
-          <div class="col-12 col-sm-12 col-lg-12" *ngFor="let feature of product.productHiglight">
-            <li>{{feature}}</li>
-          </div>
-        </div>
-        <hr>
+<h6 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><b>{{product.productTitle}}</b></h6>
+<div class="row mt-1">
+  <div class="col-12 col-sm-12 col-lg-4">
+    <img class="rounded" src={{product.image}} width=100% height=170px>
+  </div>
+  <div class="col-12 col-sm-12 col-lg-8">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-lg-12">
         <div class="row">
           <div class="col-12 col-sm-6 col-lg-8">
             <button class="btn btn-primary">BidNow</button>
           </div>
-          <div class="col-12 col-sm-6 col-lg-4 mt-2" >
-            <h5 class="font-weight-bold"><i class="fa fa-rupee" ></i>{{product.auctionAmount}}</h5>
+          <div class="col-12 col-sm-6 col-lg-4 mt-2">
+            <h5 class="font-weight-bold"><i class="fa fa-rupee"></i>{{product.auctionAmount}}</h5>
           </div>
         </div>
+        <hr>
+      </div>
+      <div class="col-12 col-sm-12 col-lg-12" *ngFor="let feature of product.productHiglight | slice:0:4;">
+        <li><i>{{feature}}</i></li>
       </div>
     </div>
+  </div>
+</div>

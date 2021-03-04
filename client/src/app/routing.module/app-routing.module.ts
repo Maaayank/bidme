@@ -8,11 +8,11 @@ import{ProductInfoComponent} from '../components/product-info/product-info.compo
 
 
 const routes: Routes = [
-  {path:'',redirectTo:'product-info',pathMatch:'full'},
+  {path:'',redirectTo:'home',pathMatch:'full'},
   {path:'login',component:LoginComponent},
   {path:'register',component:RegisterComponent},
-  {path:'homepage',component:HomepageComponent},
-  {path:'product-info',component:ProductInfoComponent},
+  {path:'home',component:HomepageComponent},
+  {path:'product/:pid',component:ProductInfoComponent},
   {path: '**', component:ErrorpageComponent}
 ];
 

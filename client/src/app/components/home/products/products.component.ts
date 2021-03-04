@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private _productService: ProductService,
+    public router: Router
   ) { }
 
   ngOnInit(): void {
@@ -24,6 +26,10 @@ export class ProductsComponent implements OnInit {
         console.error(err);
       }
     )
+  }
+
+  cardClicked(pid){
+    this.router.navigate(['/product', pid]);
   }
 }
 
