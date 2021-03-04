@@ -23,9 +23,10 @@ export class ProductsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+
     this._productService.fetchProduct().subscribe(
       (data: any) => {
+
         this.products = data.products;
         for (var product of this.products) {
           if ('images' in product) {
