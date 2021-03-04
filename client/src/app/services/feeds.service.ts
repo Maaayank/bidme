@@ -6,7 +6,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class FeedsService {
 
-  url: string = "http://127.0.0.1:3000"
+  // url: string = "http://127.0.0.1:3000"
+  url: string = "http://74409e0f5623.ngrok.io"
   constructor(private _http: HttpClient) { }
 
   fetchFeeds() {

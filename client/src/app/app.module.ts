@@ -30,6 +30,7 @@ import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth'
 
 //environments
 import { environment } from '../environments/environment'
+import { ProductInfoComponent } from './components/product-info/product-info.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { environment } from '../environments/environment'
     FeedsComponent,
     BaseformComponent,
     ExpandedFormComponent,
-    ProductsComponent
+    ProductsComponent,
+    ProductInfoComponent
   ],
   imports: [
     BrowserModule,
