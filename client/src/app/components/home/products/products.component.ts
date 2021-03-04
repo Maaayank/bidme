@@ -15,9 +15,10 @@ export class ProductsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+
     this._productService.fetchProduct().subscribe(
       (data: any) => {
+
         this.products = data.products;
       }, (err) => {
         console.error(err);
