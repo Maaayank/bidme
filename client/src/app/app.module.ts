@@ -35,6 +35,7 @@ import { ErrorpageComponent } from './components/errorpage/errorpage.component'
 //date and time picker
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { ProductitemComponent } from './components/home/products/productitem/productitem.component';
+import { ProductInfoComponent } from './components/product-info/product-info.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { ProductitemComponent } from './components/home/products/productitem/pro
     ExpandedFormComponent,
     ProductsComponent,
     ErrorpageComponent,
-    ProductitemComponent
+    ProductitemComponent,
+    ProductInfoComponent
   ],
   imports: [
     BrowserModule,
