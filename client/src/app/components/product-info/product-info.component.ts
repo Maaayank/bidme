@@ -64,24 +64,10 @@ export class ProductInfoComponent implements OnInit {
 
 
   }
+  getVal(image){
+    document.getElementsByClassName("changed")[0].setAttribute("src",image);
+  }
 
-  // retrieveDownloadLink() {
-
-  //   if (this.product.images.length > 0) {
-  //     console.log('yaa hello again ')
-  //     this._firebaseService.getDownloadUrl(this.product.images[0]).subscribe(
-  //       (data: any) => {
-  //         this.product['image'] = data
-  //         console.log(this.product);
-  //       },
-
-  //       (err) => {
-  //         console.error(err);
-  //       }
-  //     )
-  //   }
-
-  // }
 }
 
 

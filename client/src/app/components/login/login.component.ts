@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
 
         (data: any) => {
           console.log(data);
-          this._router.navigate(['/homepage']);
+          this._router.navigate(['/home']);
           this._toastr.success("", data.msg)
         },
 
@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit {
           (data: any) => {
             console.log(data);
             this._toastr.success("", data.msg)
-            this._router.navigate(['/homepage']);
+            this._router.navigate(['/home']);
           },
           error => {
             console.error(error.error);

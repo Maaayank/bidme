@@ -33,7 +33,7 @@
       <!-- <input type="datetime-local" class="form-control" formControlName="endsAt" id="endsAt" placeholder=""
         [readonly]="disableForm? true : null"> -->
       <input class="form-control" formControlName="endsAt" id="endsAt" type="datetime-local" [owlDateTime]="dt2"
-        [owlDateTimeTrigger]="dt2" placeholder="End time" [readonly]="disableForm? true : null">
+        [owlDateTimeTrigger]="dt2" placeholder="End time" [readonly]="disableForm? true : null" >
       <!-- <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" placeholder="Date Time"> -->
       <owl-date-time #dt2></owl-date-time>
     </div>

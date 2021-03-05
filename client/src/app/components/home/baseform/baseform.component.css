@@ -12,3 +12,8 @@ agm-map {
 .ng-autocomplete{
   width : 100% ;
 }
+::-webkit-calendar-picker-indicator{
+  display: none;
+}
+
+
