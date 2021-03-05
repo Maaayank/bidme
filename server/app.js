@@ -1,5 +1,6 @@
 const database = require('./database').client
 const express = require('express')
+const http = require('http')
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser')
@@ -12,6 +13,7 @@ const socket = require('./socket')
 require('dotenv').config()
 
 const app = express()
+const server = http.Server(app)
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -47,9 +49,9 @@ app.use((req, res) => {
 
 database.connect().then((str) => {
     firebase.initializeApp()
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log(`🛡️  Server listening on port: ${PORT}`)
-        socket.connect(app)
+        socket.connect(server)
     })
 }).catch((e) => {
     console.error(e)

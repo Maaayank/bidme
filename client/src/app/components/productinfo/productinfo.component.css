@@ -1,0 +1,47 @@
+.plain-card{
+    padding:10px;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 10px 0px 20px 0 rgba(100, 100, 100, 0.26);
+  }
+
+  .plain-card2{
+    padding:10px;
+    border-radius: 10px;
+    box-shadow: 10px 0px 20px 0 rgba(100, 100, 100, 0.26);
+  }
+
+  .featured{
+	width: 100%;
+	height: 250px;
+	cursor: pointer;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+.img-card{
+    display: inline-block;
+    float: none;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .img-scroll {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    display: block;
+  }
+
+.img-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .img-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }

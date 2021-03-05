@@ -1,0 +1,90 @@
+<div style="height: 100%; width:100%; padding: 10px;">
+    <div class=" container plain-card">
+        <div class="row">
+            <h4 class="col-12 col-sm-12 text-center">{{product.productTitle}}</h4>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-5" style="padding: 10px;">
+                <div class="plain-card2">
+                    <div class="featured" style="padding: 0;">
+                        <img src={{featuredImage}} style="height: 100%; width: 100%;">
+                    </div>
+                    <div class="row img-scroll" style="height: 100px;">
+                        <div class="img-card col-4" *ngFor="let image of productImages; let i = index">
+                            <div class="card h-100 w-100 p-0" (click)="changeImage(i)"
+                                style="overflow: hidden; cursor: pointer;">
+                                <img class="img-fluid h-100 w-100 p-0" src={{image}} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="plain-card2" style="margin-top: 10px;">
+                    <h6>Descripton :</h6>
+                    <div class="border w-80 p-2">{{product.productDescription}}</div>
+                    <br>
+                    <h6>Manufacturer :</h6>
+                    <div class="border w-80 p-2">{{product.manufacturer}}</div>
+                    <br>
+                    <h6>Features :</h6>
+                    <div class="border w-80 p-2">
+                        <span *ngFor="let feature of product.productFeatures">
+                            {{feature.name}} : <i>{{feature.value}}</i><br>
+                        </span>
+                    </div>
+                    <br>
+                    <h6>Highlights :</h6>
+                    <div class="border w-80 p-2">
+                        <span *ngFor="let higlight of product.productHiglight">
+                            {{higlight}}<br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-7" style="padding: 10px;">
+                <div class="plain-card">
+                    <div class="plain-card2">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                                <button class="btn btn-primary p-3 w-100 m-1">
+                                    PLACE BID <img src="https://img.icons8.com/material-rounded/24/ffffff/rupee.png" />
+                                    {{product.auctionAmount}}
+                                </button>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-8">
+                                <div class="btn btn-primary p-3 w-100 m-1">
+                                    {{auctionStatus}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="priceExist" style="margin-top: 10px;">
+                            <div class="col-12">
+                                <div class="btn btn-light border w-100 p-3">
+                                    <img src="https://img.icons8.com/android/24/000000/buy.png"
+                                        style="margin-right: 10px;" /> FLIPKART AT {{product.price}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="bidOnGoing" style="margin-top: 20px;">
+                            <div class="col-12">
+                                <span>Bidders : </span>
+                                <div class="border p-2" style="margin-top: 5px;" *ngFor="let bid of allbids | slice:0:10;">
+                                    <div class="row">
+                                        <span class="col-6">
+                                            <i>{{bid.name}}</i>
+                                        </span>
+                                        <span class="col-4">
+
+                                        </span>
+                                        <span class="col-2">
+                                            <i>{{bid.bid}}</i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

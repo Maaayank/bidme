@@ -5,9 +5,12 @@ var io = null
 
 module.exports = {
 
-    connect: (app) => {
-        server = http.Server(app)
-        io = socket(server)
+    connect: (server) => {
+        io = socket(server, {
+            cors: {
+              origin: '*',
+            }
+          })
 
         io.on("connection", (socket) => {
             console.log('connected')

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductService } from 'src/app/services/products2.service';
+import { ProductService } from 'src/app/services/product.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class ProductInfoComponent implements OnInit {
 	data: Product;
 
 	constructor(
-		private product2service: ProductService,
+		private _productservice: ProductService,
     private _route: ActivatedRoute,
     private _firebaseService: FirebaseService
 	) { }
@@ -21,7 +21,7 @@ export class ProductInfoComponent implements OnInit {
 	ngOnInit(): void {
     var i=0;
 		this._route.params.subscribe(params => {
-			this.product2service.fetchProductDetail(params['pid']).subscribe(
+			this._productservice.fetchProductDetail(params['pid']).subscribe(
 				(data: any) => {
 					console.log(data.product)
           this.data = data.product

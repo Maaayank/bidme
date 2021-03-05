@@ -36,6 +36,10 @@ import { ErrorpageComponent } from './components/errorpage/errorpage.component'
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { ProductitemComponent } from './components/home/products/productitem/productitem.component';
 import { ProductInfoComponent } from './components/product-info/product-info.component';
+import { ProductinfoComponent } from './components/productinfo/productinfo.component';
+import { ProductService } from './services/product.service';
+import { FirebaseService } from './services/firebase.service';
+import { AuctionService } from './services/auction.service';
 
 
 @NgModule({
@@ -50,7 +54,8 @@ import { ProductInfoComponent } from './components/product-info/product-info.com
     ProductsComponent,
     ErrorpageComponent,
     ProductitemComponent,
-    ProductInfoComponent
+    ProductInfoComponent,
+    ProductinfoComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +74,7 @@ import { ProductInfoComponent } from './components/product-info/product-info.com
     OwlDateTimeModule,
     OwlNativeDateTimeModule
   ],
-  providers: [UserService, FeedsService],
+  providers: [UserService, FeedsService, ProductService, FirebaseService, AuctionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
