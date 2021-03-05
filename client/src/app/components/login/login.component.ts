@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
 
         (data: any) => {
           console.log(data);
+          this._user.checkL=true;
           this._router.navigate(['/home']);
           this._toastr.success("", data.msg)
         },
@@ -70,6 +71,7 @@ export class LoginComponent implements OnInit {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User signed out.');
+      this._user.checkL=false;
     });
   }
 
@@ -96,6 +98,7 @@ export class LoginComponent implements OnInit {
         })).subscribe(
           (data: any) => {
             console.log(data);
+            this._user.checkL=true;
             this._toastr.success("", data.msg)
             this._router.navigate(['/home']);
           },

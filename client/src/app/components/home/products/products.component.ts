@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
+import { UserService } from 'src/app/services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'homepage-products',
@@ -13,7 +15,9 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private _productService: ProductService,
-    public router: Router
+    public router: Router,
+    private _userService:UserService,
+    private _toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -29,7 +33,13 @@ export class ProductsComponent implements OnInit {
   }
 
   cardClicked(pid){
-    this.router.navigate(['/product', pid]);
+    if(this._userService.checkL){
+      this.router.navigate(['/product', pid]);
+    }else{
+      this._toastr.info("", "Please Signin to Continue")
+      this.router.navigate(['/login']);
+    }
+
   }
 }
 

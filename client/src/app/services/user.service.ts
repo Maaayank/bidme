@@ -10,6 +10,8 @@ export class UserService {
   //url: string = "http://74409e0f5623.ngrok.io"
   product_api: string = "https://product-info-api.herokuapp.com/api"
 
+  checkL:boolean=false;
+
   constructor(private _http: HttpClient) { }
 
   register(body: any) {

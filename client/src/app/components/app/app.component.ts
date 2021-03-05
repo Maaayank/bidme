@@ -21,14 +21,12 @@ export class AppComponent implements OnInit {
     private _userService: UserService,
     private _toastr: ToastrService
   ) { }
-
   ngOnInit() {
     this._dataService.username.subscribe(username => this.username = username)
     this._dataService.wallet.subscribe(wallet => this.wallet = wallet)
     this._dataService.isLoggedIn.subscribe(loggedIn => this.isLoggedIn = loggedIn)
     this._dataService.feed.subscribe(feed => this.feedVisible = feed)
   }
-
   toggleFeed() {
     console.log(this.feedVisible)
     if (this.feedVisible) {
@@ -49,6 +47,7 @@ export class AppComponent implements OnInit {
           this._dataService.changeUsername('')
           this._dataService.changeWallet('')
           this._toastr.success("", data.msg)
+          this._userService.checkL=false;
         },
 
         error => {
