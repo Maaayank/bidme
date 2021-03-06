@@ -1,33 +1,89 @@
 module.exports = {
 
-
-    placeBid: async (db, amount, pid, uid, transaction_id) => {
+    placeBid: async (db, amount, pid, session) => {
 
         const products = db.collection('products')
-        const result = await products.updateOne(
+        await products.updateOne(
             {
                 pid: pid,
-                bidStartsAt: { $lt: Date.now() },
-                bidEndsAt: { $gt: Date.now() },
-                maxBid: { $lt: amount }
+                startsAt: { $lt: Date.now() },
+                endsAt: { $gt: Date.now() },
+                auctionAmount: { $lt: amount }
             },
             {
-                $push: {
-                    maxBid: amount,
-                    participants: {
-                        tid: transaction_id,
-                        uid: uid,
-                        amount: amount,
-                        timestamp: Date.now()
-                    }
+                $set: {
+                    auctionAmount: amount
                 }
+            },
+            {
+                session: session
             }
         )
     },
 
-    // getAllPrevBidsAmount : async (db, pid, uid) => {
+    addTransaction: async (db, bid, pid, tid, session) => {
 
-    //     const products = db.collection('products')
-    //     const result = await products
-    // }
+        const transactions = db.collection('transactions')
+        const result = await transactions.insertOne(
+            {
+                tid: tid,
+                pid: pid,
+                bid: bid,
+                timestamp: Date.now()
+            },
+            {
+                session: session
+            }
+        )
+    },
+
+    getUsersBiddedAmount(db, pid, uid, session = null) {
+
+        const transactions = db.collection('transactions')
+        const result = await transactions.aggregate([
+            {
+                $match: {
+                    pid: pid,
+                    uid: uid,
+                }
+            },
+            {
+                $group: {
+                    uid: $uid,
+                    pid: $pid,
+                    bidded: { $sum: $bid }
+                }
+            },
+            {
+                session: session
+            }
+        ])
+
+        console.log(result)
+        return result
+    },
+
+    getBids: async (db, pid) => {
+
+        const transactions = db.collection('transactions')
+        const result = transactions.aggregate(
+            [
+                {
+                    $match: {
+                        pid: pid
+                    }
+                },
+                {
+                    $group: {
+                        uid: $uid,
+                        bid: { $sum: $bid },
+                        timestamp: { $max: $timestamp }
+                    }
+                }
+            ]
+        )
+
+        console.log(result)
+        return result
+    }
 }

@@ -5,6 +5,6 @@ router.use('/auth', require('./auth'));
 router.use('/user', validateToken,  require('./user'))
 router.use('/feed', require('./feed'))
 router.use('/product', require('./products'))
-router.use('bid',validateToken, require('./auction'))
+router.use('/bid',validateToken, require('./auction'))
 
 module.exports = router 

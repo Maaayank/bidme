@@ -14,7 +14,6 @@ module.exports = {
 
         io.on("connection", (socket) => {
             console.log('connected')
-            // require('./events')(socket)
         })
     },
 

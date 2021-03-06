@@ -3,5 +3,6 @@ module.exports = {
     ...require('./user'),
     ...require('./product'),
     ...require('./auction'),
-    ...require('./feed')
+    ...require('./feed'),
+    ...require('./wallet')
 }
