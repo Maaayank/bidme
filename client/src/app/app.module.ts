@@ -35,8 +35,7 @@ import { ErrorpageComponent } from './components/errorpage/errorpage.component'
 //date and time picker
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { ProductitemComponent } from './components/home/products/productitem/productitem.component';
-import { ProductInfoComponent } from './components/product-info/product-info.component';
-import { ProductinfoComponent } from './components/productinfo/productinfo.component';
+import { ProductInfoComponent } from './components/productinfo/productinfo.component';
 import { ProductService } from './services/product.service';
 import { FirebaseService } from './services/firebase.service';
 import { AuctionService } from './services/auction.service';
@@ -54,8 +53,7 @@ import { AuctionService } from './services/auction.service';
     ProductsComponent,
     ErrorpageComponent,
     ProductitemComponent,
-    ProductInfoComponent,
-    ProductinfoComponent
+    ProductInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,7 @@ var MongoClient = require('mongodb').MongoClient
 var keys = require('../config').database
 
 var db = null
-var client = null
+var mClient = null
 
 module.exports = {
 	connect: () => {
@@ -14,13 +14,12 @@ module.exports = {
 				if (err) {
 					reject(err);
 				} else {
+					mClient = client
 					db = client.db("bidme")
 
 					if (db == null) {
 						reject("null")
 					}
-
-					client = client
 					resolve(`Database Connected !!`)
 				}
 			})
@@ -32,7 +31,7 @@ module.exports = {
 	},
 
 	getClient: () => {
-		return client
+		return mClient
 	},
 
 	close: async (client) => {

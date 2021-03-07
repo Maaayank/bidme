@@ -1,6 +1,6 @@
 module.exports = {
 
-    getWalletBalance: async (db, uid, session = null) => {
+    getWalletBalance: async (db, uid) => {
 
         const users = db.collection('users')
         const user = await users.findOne(
@@ -12,8 +12,6 @@ module.exports = {
                 username: 1,
                 uid: 1
             }
-        }, {
-            session: session
         })
 
         return user
@@ -28,7 +26,7 @@ module.exports = {
             $inc: {
                 wallet: bid
             }
-        }, {
+        },{
             session: session
         })
     }

@@ -26,6 +26,7 @@ module.exports = async (req, res, next) => {
             throw e
         }
     } catch (e) {
+        console.log(e)
         res.status(401).json({
             msg: `Invalid Bid Amount`,
             success: false

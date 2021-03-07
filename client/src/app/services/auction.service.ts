@@ -12,6 +12,7 @@ export class AuctionService {
   constructor() { }
 
   connectToAuction(){ 
+    console.log(`connecting to auction`)
     this.socket = io('http://localhost:3000');  
   }
 

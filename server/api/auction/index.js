@@ -6,19 +6,20 @@ const socket = require('../../socket')
 const validateBid = require('../../middlewares').validateBid
 const bidPossible = require('../../middlewares').bidPossible
 
-router.post('bid', validateBid, bidPossible, (req, res) => {
+router.post('/bid', validateBid, bidPossible, async (req, res) => {
     const err = new Error()
+    const client = dbClient.getClient()
+    const db = dbClient.get()
+    const session = client.startSession()
+
     try {
 
-        bid = req.body.bid
-        pid = req.body.pid
+        bid = Number(req.body.bid)
+        pid = Number(req.body.pid)
         uid = req.decoded.id
 
-        const client = dbClient.getClient()
-        const db = dbClient.get()
         const tid = Math.floor(Math.random() * 99745 + Math.random() * 5434)
 
-        const session = client.startSession();
 
         const transactionOptions = {
             readPreference: 'primary',
@@ -28,23 +29,24 @@ router.post('bid', validateBid, bidPossible, (req, res) => {
 
         const transactionresults = await session.withTransaction(async () => {
 
-            const user = services.getWalletBalance(db, uid, session)
+            const user = await services.getWalletBalance(db, uid)
 
             if (user != null && user.wallet >= bid) {
-                const bidded = await services.getUsersBiddedAmount(db, pid, uid, session)
+                const bidded = await services.getUsersBiddedAmount(db, pid, uid)
                 await services.placeBid(db, bid + bidded, pid, session)
-                await services.addtransaction(db, bid, pid, tid, session)
+                await services.addTransaction(db, bid, pid, tid, uid, session)
                 await services.updateWalletBalance(db, uid, bid * -1, session)
 
             } else {
+                console.log('aborting in else')
                 session.abortTransaction();
             }
+            
         }, transactionOptions)
 
         if (transactionresults) {
 
-            const user = service.getWalletBalance(db, uid)
-
+            const user = await services.getWalletBalance(db, uid)
             res.status(200).json({
                 wallet: user.wallet,
                 tid: tid,
@@ -56,7 +58,6 @@ router.post('bid', validateBid, bidPossible, (req, res) => {
                 socket.emit(String(pid), res)
 
             }).catch((e) => {
-
                 console.log(e)
             })
 
@@ -65,11 +66,13 @@ router.post('bid', validateBid, bidPossible, (req, res) => {
         }
 
     } catch (e) {
-        console.log(e)
+        console.log('error :', e.message)
         res.status(500).json({
             success: false,
             msg: "something went wrong"
         })
+    } finally {
+        await session.endSession();
     }
 })
 

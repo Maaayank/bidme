@@ -11,7 +11,7 @@ import { AuctionService } from 'src/app/services/auction.service';
   templateUrl: './productinfo.component.html',
   styleUrls: ['./productinfo.component.css']
 })
-export class ProductinfoComponent implements OnInit {
+export class ProductInfoComponent implements OnInit {
 
   product: Product;
   productImages: string[] = [];
@@ -102,6 +102,7 @@ export class ProductinfoComponent implements OnInit {
     } else if (now > startsAt && now < endsAt) {
 
       this._auctionService.connectToAuction()
+      this.subscribeToBidUpdates()
 
       var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
       var diff = this.getTimeDifference(endsAt)
@@ -113,7 +114,7 @@ export class ProductinfoComponent implements OnInit {
 
       seconds = Math.floor(totalSeconds) % 60;
       minutes = Math.floor(totalMinutes) % 60;
-      hours = Math.floor(totalHours) % 60;
+      hours = Math.floor(totalHours) % 60;  
 
       if (days >= 1) {
         this.auctionStatus = `ENDS IN ${days} DAYS ${hours} HOURS`
@@ -134,6 +135,12 @@ export class ProductinfoComponent implements OnInit {
     }
   }
 
+  private subscribeToBidUpdates(){
+    this._auctionService.onBidUpdates(this.product.pid).subscribe((res)=>{
+      console.log(res)
+    })
+  }
+
   private getTimeDifference(time) {
     return time - Date.now()
   }
@@ -145,6 +152,7 @@ export class ProductinfoComponent implements OnInit {
 
 
 interface Product {
+  pid: Number,
   productTitle: String;
   productHiglight: String[];
   productFeatures: JSON[];

@@ -3,7 +3,7 @@ module.exports = {
     placeBid: async (db, amount, pid, session) => {
 
         const products = db.collection('products')
-        await products.updateOne(
+        const res = await products.updateOne(
             {
                 pid: pid,
                 startsAt: { $lt: Date.now() },
@@ -19,9 +19,13 @@ module.exports = {
                 session: session
             }
         )
+
+        if( res == null || res.modifiedCount == 0){
+            throw new Error(`Place bid failed`)
+        }
     },
 
-    addTransaction: async (db, bid, pid, tid, session) => {
+    addTransaction: async (db, bid, pid, tid, uid,session) => {
 
         const transactions = db.collection('transactions')
         const result = await transactions.insertOne(
@@ -29,6 +33,7 @@ module.exports = {
                 tid: tid,
                 pid: pid,
                 bid: bid,
+                uid: uid,
                 timestamp: Date.now()
             },
             {
@@ -37,7 +42,7 @@ module.exports = {
         )
     },
 
-    getUsersBiddedAmount(db, pid, uid, session = null) {
+    getUsersBiddedAmount: async (db, pid, uid) => {
 
         const transactions = db.collection('transactions')
         const result = await transactions.aggregate([
@@ -49,18 +54,14 @@ module.exports = {
             },
             {
                 $group: {
-                    uid: $uid,
-                    pid: $pid,
-                    bidded: { $sum: $bid }
+                    _id: '$uid',
+                    bidded: { $sum: '$bid' }
                 }
-            },
-            {
-                session: session
             }
         ])
 
-        console.log(result)
-        return result
+        const res = await result.toArray()
+        return res.length > 0 ? res[0].bidded : 0
     },
 
     getBids: async (db, pid) => {
@@ -75,15 +76,15 @@ module.exports = {
                 },
                 {
                     $group: {
-                        uid: $uid,
-                        bid: { $sum: $bid },
-                        timestamp: { $max: $timestamp }
+                        _id: '$uid',
+                        bid: { $sum: '$bid' },
+                        timestamp: { $max: '$timestamp' }
                     }
                 }
             ]
         )
 
-        console.log(result)
-        return result
+        res = await result.toArray()
+        return res
     }
 }
