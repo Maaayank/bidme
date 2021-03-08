@@ -44,19 +44,13 @@
                 <div class="plain-card">
                     <div class="plain-card2">
                         <div class="row">
-                            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                                <button class="btn btn-primary p-3 w-100 m-1">
-                                    PLACE BID <img src="https://img.icons8.com/material-rounded/24/ffffff/rupee.png" />
-                                    {{product.auctionAmount}}
-                                </button>
-                            </div>
-                            <div class="col-12 col-sm-12 col-md-6 col-lg-8">
+                            <div class="col-12 ">
                                 <div class="btn btn-primary p-3 w-100 m-1">
                                     {{auctionStatus}}
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="priceExist" style="margin-top: 10px;">
+                        <div class="row" style="margin-top: 10px;">
                             <div class="col-12">
                                 <div class="btn btn-light border w-100 p-3">
                                     <img src="https://img.icons8.com/android/24/000000/buy.png"
@@ -64,21 +58,33 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="bidOnGoing" style="margin-top: 20px;">
-                            <div class="col-12">
-                                <span>Bidders : </span>
-                                <div class="border p-2" style="margin-top: 5px;" *ngFor="let bid of allbids | slice:0:10;">
-                                    <div class="row">
-                                        <span class="col-6">
-                                            <i>{{bid.name}}</i>
-                                        </span>
-                                        <span class="col-4">
-
-                                        </span>
-                                        <span class="col-2">
-                                            <i>{{bid.bid}}</i>
-                                        </span>
-                                    </div>
+                        <div class="row" *ngIf="priceExist" style="margin-top: 10px;">
+                            <div class="col-4">
+                                <div class="btn btn-primary border w-100 p-3">
+                                    BID
+                                </div>  
+                            </div>
+                            <div class="col-8">
+                                <div class="btn btn-primary w-100 p-3">
+                                    HIGHEST BID : <img src="https://img.icons8.com/fluent-systems-filled/24/ffffff/rupee.png" style="height: 20px; width: 20px;"/> {{product.auctionAmount}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="bidOnGoing" style="margin-top: 20px;">
+                        <div class="col-12">
+                            <span>Bidders : </span>
+                            <div class="border p-2" style="margin-top: 5px;" *ngFor="let bid of bids | slice:0:10;">
+                                <div class="row">
+                                    <span class="col-6">
+                                        <i>{{bid.username}}</i>
+                                    </span>
+                                    <span class="col-4">
+                                        {{ bid.timestamp | date:'dd MMMM yyyy hh:m:ss' }}
+                                    </span>
+                                    <span class="col-2">
+                                        <img src="https://img.icons8.com/material-rounded/24/000000/rupee.png" style="height: 15px; width: 15px;"/> <i>{{bid.bid}}</i>
+                                    </span>
                                 </div>
                             </div>
                         </div>

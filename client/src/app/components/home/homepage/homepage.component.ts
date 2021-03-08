@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { DataService } from '../../../services/data.service'
-import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-homepage',
@@ -35,36 +33,10 @@ export class HomepageComponent implements OnInit {
   constructor(
     private _user: UserService,
     private _toastr: ToastrService,
-    private _dataService: DataService,
-    private _firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
-
-    this._user.profile()
-      .subscribe(
-        (data: any) => {
-          console.log(data);
-          this._dataService.changeUsername(data.username || "")
-          this._dataService.changeWallet(data.wallet || "0")
-          this._dataService.toggleIsLoggedIn(true)
-
-          if (data != null && data.msg) {
-            this._toastr.success("", data.msg)
-          }
-
-          if(data != null && data.ftoken){
-            this._firebaseService.authUser(data.ftoken)
-          }
-        },
-
-        error => {
-          this._dataService.toggleIsLoggedIn(false)
-        }
-      )
   }
-
-
 
   onClear() {
     //todo : nothing for now

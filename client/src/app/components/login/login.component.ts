@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { FirebaseService } from 'src/app/services/firebase.service';
 
 declare var gapi: any;
 declare var $: any
@@ -30,7 +29,6 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _user: UserService,
     private _toastr: ToastrService,
-    private _firebaseService: FirebaseService
   ) {
       this.info={
         passinfo:'Password should contain First capital letter Password should be of min 8 length Password should contain at least special character and digit',
@@ -55,7 +53,6 @@ export class LoginComponent implements OnInit {
 
         (data: any) => {
           console.log(data);
-          this._user.checkL=true;
           this._router.navigate(['/home']);
           this._toastr.success("", data.msg)
         },
@@ -98,7 +95,6 @@ export class LoginComponent implements OnInit {
         })).subscribe(
           (data: any) => {
             console.log(data);
-            this._user.checkL=true;
             this._toastr.success("", data.msg)
             this._router.navigate(['/home']);
           },

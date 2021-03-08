@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'homepage-baseform',
@@ -24,6 +25,8 @@ export class BaseformComponent implements OnInit {
   keyword = 'productTitle';
   data: Titles;
 
+  isloggedIn: Boolean = false;
+
   baseForm: FormGroup = new FormGroup({
     title: new FormControl(null, [Validators.required]),
     auctionAmount: new FormControl(null, [Validators.required, Validators.min(1)]),
@@ -33,12 +36,18 @@ export class BaseformComponent implements OnInit {
 
   constructor(
     private _userService: UserService,
+    private _dataService: DataService,
     private _toastr: ToastrService,
     private _router: Router
   ) { }
 
   ngOnInit(): void {
     this._toastr.info("", "Initializing....")
+
+    this._dataService.isLoggedIn.subscribe((data) => {
+      this.isloggedIn = data
+    })
+
     this._userService.productTitles().subscribe(
       (data: any) => {
         this._toastr.success("", "Ready")
@@ -49,7 +58,8 @@ export class BaseformComponent implements OnInit {
   }
 
   onNextClicked() {
-    if(this._userService.checkL){
+    if (this.isloggedIn) {
+
       if (this.nextButtonText == "Next") {
         this.disableForm = true
         this.nextButtonText = "Clear All"
@@ -67,9 +77,12 @@ export class BaseformComponent implements OnInit {
         })
         this.clearAll.emit()
       }
-    }else{
+
+    } else {
+
       this._toastr.info("", "Please Signin to Continue")
       this._router.navigate(['/login']);
+      
     }
   }
 

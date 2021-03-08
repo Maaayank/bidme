@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'products-productitem',
@@ -11,12 +12,17 @@ export class ProductitemComponent implements AfterViewInit {
   @Input('product')
   product: Product;
 
+  auctionStatus: String = ""
+  private subscription: Subscription;
+
   constructor(
     private _firebaseService: FirebaseService
   ) { }
 
-  ngAfterViewInit():void {
-    if('images' in this.product){
+  ngAfterViewInit(): void {
+
+    this.bidStatus(this.product.startsAt, this.product.endsAt)
+    if ('images' in this.product) {
       this.retrieveDownloadLink()
     }
   }
@@ -36,7 +42,73 @@ export class ProductitemComponent implements AfterViewInit {
         }
       )
     }
+  }
 
+  bidStatus(startsAt, endsAt) {
+    var now = Date.now()
+    if (now < startsAt) {
+
+      var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
+      var diff = this.getTimeDifference(startsAt)
+
+      totalSeconds = diff / 1000;
+      totalMinutes = totalSeconds / 60;
+      totalHours = totalMinutes / 60;
+      days = Math.floor(totalHours / 24);
+
+      seconds = Math.floor(totalSeconds) % 60;
+      minutes = Math.floor(totalMinutes) % 60;
+      hours = Math.floor(totalHours) % 60;
+
+      if (days >= 1) {
+        this.auctionStatus = `STARTS IN ${days} DAYS ${hours} HOURS`
+      } else if (hours >= 1) {
+        this.auctionStatus = `STARTS IN ${hours} HOURS ${minutes} MINUTES`
+      } else {
+        this.subscription = interval(1000).subscribe((x) => {
+          diff = this.getTimeDifference(endsAt)
+          totalSeconds = diff / 1000;
+          totalMinutes = totalSeconds / 60;
+          seconds = Math.floor(totalSeconds) % 60;
+          minutes = Math.floor(totalMinutes) % 60;
+          this.auctionStatus = `STARTS IN ${minutes} MINUTES ${seconds} SECONDS`
+        })
+      }
+    } else if (now > startsAt && now < endsAt) {
+
+      var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
+      var diff = this.getTimeDifference(endsAt)
+
+      totalSeconds = diff / 1000;
+      totalMinutes = totalSeconds / 60;
+      totalHours = totalMinutes / 60;
+      days = Math.floor(totalHours / 24);
+
+      seconds = Math.floor(totalSeconds) % 60;
+      minutes = Math.floor(totalMinutes) % 60;
+      hours = Math.floor(totalHours) % 24;
+
+      if (days >= 1) {
+        this.auctionStatus = `ENDS IN ${days} DAYS ${hours} HOURS`
+      } else if (hours >= 1) {
+        this.auctionStatus = `ENDS IN ${hours} HOURS ${minutes} MINUTES`
+      } else {
+        this.subscription = interval(1000).subscribe((_) => {
+          diff = this.getTimeDifference(endsAt)
+          totalSeconds = diff / 1000;
+          totalMinutes = totalSeconds / 60;
+          seconds = Math.floor(totalSeconds) % 60;
+          minutes = Math.floor(totalMinutes) % 60;
+          this.auctionStatus = `ENDS IN ${minutes} MINUTES ${seconds} SECONDS`
+        })
+      }
+    } else {
+      this.auctionStatus = "Ended"
+    }
+  }
+
+  private getTimeDifference(time) {
+    return time - Date.now()
   }
 }
 
@@ -44,7 +116,9 @@ interface Product {
   productTitle: String;
   productHiglight: String[];
   productFeatures: JSON[];
-  auctionAmount: Number
+  auctionAmount: Number,
+  startsAt: Number,
+  endsAt: Number,
   price: String;
   manufacturer: String;
   description: String;

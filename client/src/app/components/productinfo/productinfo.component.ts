@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AuctionService } from 'src/app/services/auction.service';
+import { pid } from 'process';
+import { DataService } from 'src/app/services/data.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -15,11 +18,11 @@ export class ProductInfoComponent implements OnInit {
 
   product: Product;
   productImages: string[] = [];
-  allbids: Bid[] = [{ name: "Mayank Patel", bid: 1200 }, { name: "Mayank Patel", bid: 1200 }]
   featuredImage: string = "";
   auctionStatus: String = ""
   priceExist: boolean = false
   bidOnGoing: boolean = true
+  bids: Bid[] = []
 
   private subscription: Subscription;
 
@@ -27,14 +30,19 @@ export class ProductInfoComponent implements OnInit {
     private _productservice: ProductService,
     private _route: ActivatedRoute,
     private _firebaseService: FirebaseService,
-    private _auctionService: AuctionService
+    private _auctionService: AuctionService,
+    private _dataService: DataService,
+    private _toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
+
     this._route.params.subscribe(params => {
       this._productservice.fetchProductDetail(params['pid']).subscribe(
         (data: any) => {
           console.log(data.product)
+
+          this.bids = data.bids
           this.product = data.product
 
           if ('price' in this.product) {
@@ -114,14 +122,14 @@ export class ProductInfoComponent implements OnInit {
 
       seconds = Math.floor(totalSeconds) % 60;
       minutes = Math.floor(totalMinutes) % 60;
-      hours = Math.floor(totalHours) % 60;  
+      hours = Math.floor(totalHours) % 24;
 
       if (days >= 1) {
         this.auctionStatus = `ENDS IN ${days} DAYS ${hours} HOURS`
       } else if (hours >= 1) {
         this.auctionStatus = `ENDS IN ${hours} HOURS ${minutes} MINUTES`
       } else {
-        this.subscription = interval(1000).subscribe((x) => {
+        this.subscription = interval(1000).subscribe((_) => {
           diff = this.getTimeDifference(endsAt)
           totalSeconds = diff / 1000;
           totalMinutes = totalSeconds / 60;
@@ -135,9 +143,9 @@ export class ProductInfoComponent implements OnInit {
     }
   }
 
-  private subscribeToBidUpdates(){
-    this._auctionService.onBidUpdates(this.product.pid).subscribe((res)=>{
-      console.log(res)
+  private subscribeToBidUpdates() {
+    this._auctionService.onBidUpdates(this.product.pid).subscribe((res: any) => {
+      this.bids = res
     })
   }
 
@@ -145,8 +153,29 @@ export class ProductInfoComponent implements OnInit {
     return time - Date.now()
   }
 
+  private bid(bid){
+
+    var data = {
+      bid: bid,
+      pid: this.product.pid
+    }
+
+    this._toastr.info(`Bid submitted of  ${bid}`)
+    this._productservice.bidOnProduct(data).subscribe(
+      (res: any)=>{
+        this._dataService.changeWallet(res.wallet)
+        this._toastr.success(res.msg)
+        this._toastr.info(`Transaction: ${res.tid}`)
+      },
+      (err)=>{
+        this._toastr.error('res.msg')
+      }
+    )
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this._auctionService.disconnectSocket()
   }
 }
 
@@ -172,6 +201,7 @@ interface Address {
 }
 
 interface Bid {
-  name: String,
+  username: String,
+  timestamp: Number,
   bid: Number
 }

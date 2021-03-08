@@ -7,11 +7,15 @@
     <div class="row">
       <div class="col-12 col-sm-12 col-lg-12">
         <div class="row">
-          <div class="col-12 col-sm-6 col-lg-8">
-            <button class="btn btn-primary">BidNow</button>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6">
+            <div class="btn btn-primary p-3 w-100 m-1">
+              {{auctionStatus}}
+            </div>
           </div>
-          <div class="col-12 col-sm-6 col-lg-4 mt-2">
-            <h5 class="font-weight-bold"><i class="fa fa-rupee"></i>{{product.auctionAmount}}</h5>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+            <div class="btn btn-primary p-3 w-100 m-1">
+              <img src="https://img.icons8.com/fluent-systems-filled/24/ffffff/rupee.png" style="height: 20px; width: 20px;"/> {{product.auctionAmount}}
+            </div>
           </div>
         </div>
         <hr>

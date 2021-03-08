@@ -3,6 +3,7 @@ const { validateToken, validateNewProduct} = require('../../middlewares')
 
 const dbService = require('../../database').services
 const client = require('../../database').client
+const socket = require('../../socket')
 
 const { validationResult } = require('express-validator');
 
@@ -60,12 +61,13 @@ router.get('/:pid/info', async (req, res) => {
         const db = client.get()
 
         const result = await dbService.getProductDetails(db, pid)
+        const bids = await dbService.getBids(db, pid)
 
         res.status(200).json({
             success: true,
-            product: result
+            product: result,
+            bids: bids
         })
-
 
     } catch (e) {   
         if (e.code == 401) {

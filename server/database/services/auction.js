@@ -20,12 +20,12 @@ module.exports = {
             }
         )
 
-        if( res == null || res.modifiedCount == 0){
+        if (res == null || res.modifiedCount == 0) {
             throw new Error(`Place bid failed`)
         }
     },
 
-    addTransaction: async (db, bid, pid, tid, uid,session) => {
+    addTransaction: async (db, bid, pid, tid, uid, session) => {
 
         const transactions = db.collection('transactions')
         const result = await transactions.insertOne(
@@ -80,7 +80,30 @@ module.exports = {
                         bid: { $sum: '$bid' },
                         timestamp: { $max: '$timestamp' }
                     }
-                }
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        let: { bid_user: "$_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ['$uid', '$$bid_user']
+                                    }
+                                }
+                            },
+                            {
+                                $project: { username: 1, _id: 0 }
+                            }
+                        ],
+                        as: 'user'
+                    }
+                },
+                {
+                    $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$user", 0] }, "$$ROOT"] } }
+                },
+                { $project: { user: 0, _id: 0 } }
             ]
         )
 

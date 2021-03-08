@@ -90,7 +90,6 @@ export class RegisterComponent implements OnInit {
         })).subscribe(
           (data: any) => {
             console.log(data);
-            this._userService.checkL=true;
             this._router.navigate(['/home']);
             this._toastr.success("", data.msg)
           },
