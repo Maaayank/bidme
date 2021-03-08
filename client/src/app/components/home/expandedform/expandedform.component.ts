@@ -39,7 +39,7 @@ export class ExpandedFormComponent implements OnInit, AfterViewInit {
 
       const coord = position.coords;
       console.log(`lat:${position.coords.latitude},lon:${position.coords.longitude}`);
-      
+
       this.product.pickup_address.lat = String(coord.latitude)
       this.product.pickup_address.lon = String(coord.longitude)
 

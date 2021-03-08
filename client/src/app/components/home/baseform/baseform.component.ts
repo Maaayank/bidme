@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'homepage-baseform',
@@ -32,7 +33,8 @@ export class BaseformComponent implements OnInit {
 
   constructor(
     private _userService: UserService,
-    private _toastr: ToastrService
+    private _toastr: ToastrService,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -47,23 +49,27 @@ export class BaseformComponent implements OnInit {
   }
 
   onNextClicked() {
-    if (this.nextButtonText == "Next") {
-      this.disableForm = true
-      this.nextButtonText = "Clear All"
-      var formData = this.baseForm.value
-      formData.selectedProduct = this.selected
-      this.onNext.emit(formData)
-    } else {
-      this.nextButtonText = "Next"
-      this.disableForm = false
-      this.baseForm.setValue({
-        title: "",
-        auctionAmount: "",
-        startsAt: "",
-        endsAt: ""
-      })
-
-      this.clearAll.emit()
+    if(this._userService.checkL){
+      if (this.nextButtonText == "Next") {
+        this.disableForm = true
+        this.nextButtonText = "Clear All"
+        var formData = this.baseForm.value
+        formData.selectedProduct = this.selected
+        this.onNext.emit(formData)
+      } else {
+        this.nextButtonText = "Next"
+        this.disableForm = false
+        this.baseForm.setValue({
+          title: "",
+          auctionAmount: "",
+          startsAt: "",
+          endsAt: ""
+        })
+        this.clearAll.emit()
+      }
+    }else{
+      this._toastr.info("", "Please Signin to Continue")
+      this._router.navigate(['/login']);
     }
   }
 
