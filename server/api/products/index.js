@@ -1,5 +1,5 @@
 var router = require('express').Router()
-const { validateToken, validateNewProduct} = require('../../middlewares')
+const { validateToken, validateNewProduct, decodeToken } = require('../../middlewares')
 
 const dbService = require('../../database').services
 const client = require('../../database').client
@@ -53,23 +53,27 @@ router.post('/new', validateToken, validateNewProduct, async (req, res) => {
     }
 })
 
-router.get('/:pid/info', async (req, res) => {
+router.get('/:pid/info', decodeToken, async (req, res) => {
     try {
 
         const pid = Number(req.params.pid)
-        const err = new Error() 
+        const err = new Error()
         const db = client.get()
+        const uid = req.decoded ? req.decoded.id : -1
 
         const result = await dbService.getProductDetails(db, pid)
         const bids = await dbService.getBids(db, pid)
 
+        const bidded = await dbService.getUsersBiddedAmount(db, pid, uid)
+
+        result.prevBid = bidded
         res.status(200).json({
             success: true,
             product: result,
             bids: bids
         })
 
-    } catch (e) {   
+    } catch (e) {
         if (e.code == 401) {
             res.status(e.code).json({
                 msg: e.message,
@@ -87,7 +91,7 @@ router.get('/:pid/info', async (req, res) => {
 
 router.get('/:page/all', async (req, res) => {
 
-    try{
+    try {
         const err = new Error()
         const page = Number(req.params.page)
         const db = client.get()

@@ -60,13 +60,16 @@
                         </div>
                         <div class="row" *ngIf="priceExist" style="margin-top: 10px;">
                             <div class="col-4">
-                                <div class="btn btn-primary border w-100 p-3">
+                                <div class="btn btn-primary border w-100 p-3" data-toggle="modal"
+                                    data-target="#bidDialog">
                                     BID
-                                </div>  
+                                </div>
                             </div>
                             <div class="col-8">
                                 <div class="btn btn-primary w-100 p-3">
-                                    HIGHEST BID : <img src="https://img.icons8.com/fluent-systems-filled/24/ffffff/rupee.png" style="height: 20px; width: 20px;"/> {{product.auctionAmount}}
+                                    HIGHEST BID : <img
+                                        src="https://img.icons8.com/fluent-systems-filled/24/ffffff/rupee.png"
+                                        style="height: 20px; width: 20px;" /> {{product.auctionAmount}}
                                 </div>
                             </div>
                         </div>
@@ -83,13 +86,75 @@
                                         {{ bid.timestamp | date:'dd MMMM yyyy hh:m:ss' }}
                                     </span>
                                     <span class="col-2">
-                                        <img src="https://img.icons8.com/material-rounded/24/000000/rupee.png" style="height: 15px; width: 15px;"/> <i>{{bid.bid}}</i>
+                                        <img src="https://img.icons8.com/material-rounded/24/000000/rupee.png"
+                                            style="height: 15px; width: 15px;" /> <i>{{bid.bid}}</i>
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bidDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bidTitle">PLACE YOUR BID
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class=" container-fluid">
+                    <div class="row m-2">
+                        <div class="col-4 text-center">
+                            Previous Bid
+                        </div>
+                        <div class="col-1 text-center">
+
+                        </div>
+                        <div class="col-3 text-center">
+                            Add Coins
+                        </div>
+                        <div class="col-1 text-center">
+
+                        </div>
+                        <div class="col-3 text-center">
+                            Total Bid
+                        </div>
+                    </div>
+                    <div class="row m-2">
+                        <div class="col-4">
+                            <div class="card border border-primary text-center p-2">
+                                {{product.prevBid || 0}}
+                            </div>
+                        </div>
+                        <div class="col-1 text-center p-0">
+                            +
+                        </div>
+                        <div class="col-3">
+                            <input type="number" class="form-control border border-success text-center p-2"
+                                id="placedBid" placeholder="bid..." [(ngModel)]="bidPlaced">
+                        </div>
+                        <div class="col-1 text-center p-0">
+                            =
+                        </div>
+                        <div class="col-3">
+                            <div class="card border border-danger text-center p-2" [(ngModel)]="totalBid">
+                               {{(product.prevBid? product.prevBid : 0) + (bidPlaced? bidPlaced : 0)}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">PLACE BID</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

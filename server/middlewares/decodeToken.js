@@ -1,4 +1,4 @@
-    const jwtSecret = require('../config').jwt.jwt_secret
+const jwtSecret = require('../config').jwt.jwt_secret
 const dbClient = require('../database').client
 const dbServices = require('../database').services
 const jwt = require('jsonwebtoken')
@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 module.exports = async (req, res, next) => {
 
     try {
-
 
         const token = req.cookies.token || ''
 
@@ -23,19 +22,17 @@ module.exports = async (req, res, next) => {
 
             if (!result.exists) {
                 req.decoded = decoded
-                console.log(`User Authenticated`)
+                console.log(`Token Decoded`)
                 next()
             } else {
                 throw new Error(`Token Expired !! -> ${token}`)
             }
-        } else {
+        }else{
             throw new Error()
         }
 
     } catch (err) {
-        res.status(401).json({
-            msg: `Authentication Required`,
-            success: false
-        })
+        console.log("henlo",err)
+        next()
     }
 }

@@ -22,7 +22,7 @@ export class ProductService {
     console.log(id)
     return this._http.get(this.url + `/api/product/${id}/info`, {
         observe: 'body',
-        withCredentials: false,
+        withCredentials: true,
         headers: new HttpHeaders().append('Content-Type', 'application/json')
       })
   }

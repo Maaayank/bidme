@@ -4,17 +4,17 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AuctionService } from 'src/app/services/auction.service';
-import { pid } from 'process';
 import { DataService } from 'src/app/services/data.service';
 import { ToastrService } from 'ngx-toastr';
 
+declare const $: any
 
 @Component({
   selector: 'app-productinfo',
   templateUrl: './productinfo.component.html',
   styleUrls: ['./productinfo.component.css']
 })
-export class ProductInfoComponent implements OnInit {
+export class ProductInfoComponent implements OnInit, OnDestroy {
 
   product: Product;
   productImages: string[] = [];
@@ -23,6 +23,8 @@ export class ProductInfoComponent implements OnInit {
   priceExist: boolean = false
   bidOnGoing: boolean = true
   bids: Bid[] = []
+  bidPlaced: number;
+  totalBid: number;
 
   private subscription: Subscription;
 
@@ -44,7 +46,6 @@ export class ProductInfoComponent implements OnInit {
 
           this.bids = data.bids
           this.product = data.product
-
           if ('price' in this.product) {
             this.priceExist = true
           }
@@ -143,6 +144,11 @@ export class ProductInfoComponent implements OnInit {
     }
   }
 
+  // openModal() {
+  //   $('#bidDialog').modal('show')
+  //   console.log('openModal')
+  // }
+
   private subscribeToBidUpdates() {
     this._auctionService.onBidUpdates(this.product.pid).subscribe((res: any) => {
       this.bids = res
@@ -153,7 +159,7 @@ export class ProductInfoComponent implements OnInit {
     return time - Date.now()
   }
 
-  private bid(bid){
+  private bid(bid) {
 
     var data = {
       bid: bid,
@@ -162,12 +168,12 @@ export class ProductInfoComponent implements OnInit {
 
     this._toastr.info(`Bid submitted of  ${bid}`)
     this._productservice.bidOnProduct(data).subscribe(
-      (res: any)=>{
+      (res: any) => {
         this._dataService.changeWallet(res.wallet)
         this._toastr.success(res.msg)
         this._toastr.info(`Transaction: ${res.tid}`)
       },
-      (err)=>{
+      (err) => {
         this._toastr.error('res.msg')
       }
     )
@@ -192,7 +198,8 @@ interface Product {
   images: String[];
   pickup_address: Address;
   startsAt: Number;
-  endsAt: Number
+  endsAt: Number;
+  prevBid: number
 }
 
 interface Address {

@@ -2,6 +2,7 @@ var router = require('express').Router()
 
 const dbClient = require('../../database').client
 const services = require('../../database').services
+const emitAuctionUpdate = require('../../services').emitAuctionUpdate
 const socket = require('../../socket')
 const validateBid = require('../../middlewares').validateBid
 const bidPossible = require('../../middlewares').bidPossible
@@ -41,7 +42,7 @@ router.post('/bid', validateBid, bidPossible, async (req, res) => {
                 console.log('aborting in else')
                 session.abortTransaction();
             }
-            
+
         }, transactionOptions)
 
         if (transactionresults) {
@@ -53,14 +54,8 @@ router.post('/bid', validateBid, bidPossible, async (req, res) => {
                 msg: `Bid successful`
             })
 
-            services.getBids(db, pid).then((res) => {
-
-                socket.emit(String(pid), res)
-
-            }).catch((e) => {
-                console.log(e)
-            })
-
+            emitAuctionUpdate(pid, db)
+            
         } else {
             throw err
         }
