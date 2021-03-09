@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  url: string = 'http://127.0.0.1:3000';
-  product_api: string = "https://product-info-api.herokuapp.com/api"
-
+  url: string = environment.base_url;
+  product_api: string = environment.products_api
 
   constructor(private _http: HttpClient) { }
 

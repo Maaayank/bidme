@@ -1,13 +1,14 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Subscription, interval } from 'rxjs';
+import { Product, Address } from '../../../../interfaces'
 
 @Component({
   selector: 'products-productitem',
   templateUrl: './productitem.component.html',
   styleUrls: ['./productitem.component.css']
 })
-export class ProductitemComponent implements AfterViewInit {
+export class ProductitemComponent implements AfterViewInit, OnDestroy {
 
   @Input('product')
   product: Product;
@@ -110,24 +111,9 @@ export class ProductitemComponent implements AfterViewInit {
   private getTimeDifference(time) {
     return time - Date.now()
   }
-}
 
-interface Product {
-  productTitle: String;
-  productHiglight: String[];
-  productFeatures: JSON[];
-  auctionAmount: Number,
-  startsAt: Number,
-  endsAt: Number,
-  price: String;
-  manufacturer: String;
-  description: String;
-  images: String[];
-  pickup_address: Address;
-  image: string
-}
-
-interface Address {
-  lat: String,
-  lon: String
+  ngOnDestroy(){
+    if(this.subscription)
+      this.subscription.unsubscribe()
+  }
 }

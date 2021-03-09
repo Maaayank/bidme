@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { environment } from '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  //url: string = "https://540a5a2d797e.ngrok.io"
-  url:string="http://127.0.0.1:3000";
+  url:string= environment.base_url;
 
   constructor(private _http: HttpClient) { }
   fetchProduct(){

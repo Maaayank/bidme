@@ -28,7 +28,7 @@ module.exports = {
     addTransaction: async (db, bid, pid, tid, uid, session) => {
 
         const transactions = db.collection('transactions')
-        const result = await transactions.insertOne(
+        await transactions.insertOne(
             {
                 tid: tid,
                 pid: pid,
@@ -103,11 +103,12 @@ module.exports = {
                 {
                     $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$user", 0] }, "$$ROOT"] } }
                 },
-                { $project: { user: 0, _id: 0 } }
+                { $project: { user: 0, _id: 0 } },
+                { $sort: { bid : -1}}
             ]
         )
 
         res = await result.toArray()
         return res
-    }
+    },
 }

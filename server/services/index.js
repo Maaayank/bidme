@@ -1,3 +1,4 @@
 module.exports = {
-    ...require('./feedsService')
+    ...require('./feedsService'),
+    ...require('./emitService')
 }

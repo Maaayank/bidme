@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  base_url: 'http:localhost:3000',
+  products_api: "https://product-info-api.herokuapp.com/api",
   firebase : {
     apiKey: "AIzaSyD5BKlNvrnpzDyZXdlsxlVl8NggRVNhEL4",
     authDomain: "bidme-d3362.firebaseapp.com",

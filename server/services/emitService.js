@@ -6,8 +6,10 @@ module.exports = {
     emitAuctionUpdate: async (pid, db) => {
 
         const bids = await dbServices.getBids(db, pid)
-        const stat = await dbServices.getStat(db, pid)
-
-        socket.emit(String(pid), { bids: bids, stat: stat })
+        var auctionAmount = 0
+        if(bids.length > 0)
+            auctionAmount = bids[0].bid
+            
+        socket.emit(String(pid), { bids: bids, auctionAmount: auctionAmount })
     }
 }

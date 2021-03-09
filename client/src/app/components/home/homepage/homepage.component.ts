@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Product, Image, Address, Details } from '../../../interfaces'
 
 @Component({
   selector: 'app-homepage',
@@ -12,14 +13,21 @@ export class HomepageComponent implements OnInit {
   out: Boolean = true;
 
   product: Product = {
+    image: null,
+    pid: null,
+    auctionAmount: 0,
+    productImages : null,
+    startsAt: null,
+    endsAt: null,
+    prevBid: null,
     productFeatures: [],
     productTitle: null,
     productHiglight: [],
     manufacturer: null,
-    description: "",
+    productDescription: "",
     price: null,
     images: [],
-    pickup_address: {lat: '0', lon: '0'}
+    pickup_address: {lat: null, lon: null}
   }
 
   details: Details = {
@@ -71,7 +79,7 @@ export class HomepageComponent implements OnInit {
   submit(productDetails) {
 
     var images = []
-    productDetails.images.forEach((image: Image) => {
+    productDetails.productImages.forEach((image: Image) => {
       images.push(image.path)
     });
 
@@ -81,14 +89,13 @@ export class HomepageComponent implements OnInit {
       productFeatures: productDetails.productFeatures,
       productTitle: productDetails.productTitle,
       manufacturer: productDetails.manufacturer,
-      productDescription: productDetails.description,
+      productDescription: productDetails.productDescription,
       auctionAmount: this.details.auctionAmount,
       startsAt: this.details.startsAt.getTime(),
       endsAt: this.details.endsAt.getTime(),
-      images: images
+      images: images,
+      pickup_address: productDetails.pickup_address
     }
-
-
 
     this._user.submitProduct(data).subscribe(
       (data: any) => {
@@ -100,32 +107,4 @@ export class HomepageComponent implements OnInit {
       }
     )
   }
-}
-
-interface Details {
-  auctionAmount: Number;
-  startsAt: Date;
-  endsAt: Date;
-  title: String;
-}
-
-interface Product {
-  productTitle: String;
-  productHiglight: String[];
-  productFeatures: JSON[];
-  price: String;
-  manufacturer: String;
-  description: String;
-  images: Image[];
-  pickup_address: Address
-}
-
-interface Image {
-  url: String,
-  path: String
-}
-
-interface Address {
-  lat: String,
-  lon: String
 }

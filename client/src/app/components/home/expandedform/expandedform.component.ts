@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UserService } from 'src/app/services/user.service';
+import { Product, Address, Image} from '../../../interfaces'
 
 declare const L: any;
 
@@ -40,8 +41,8 @@ export class ExpandedFormComponent implements OnInit, AfterViewInit {
       const coord = position.coords;
       console.log(`lat:${position.coords.latitude},lon:${position.coords.longitude}`);
 
-      this.product.pickup_address.lat = String(coord.latitude)
-      this.product.pickup_address.lon = String(coord.longitude)
+      this.product.pickup_address.lat = coord.latitude
+      this.product.pickup_address.lon = coord.longitude
 
 
       var mymap = L.map('map').setView([coord.latitude, coord.longitude], 13);
@@ -108,7 +109,7 @@ export class ExpandedFormComponent implements OnInit, AfterViewInit {
     const file: File = files[0]
     const path = `/product/${file.name}`
 
-    if (this.product.images.length < 5) {
+    if (this.product.productImages.length < 5) {
       if (file.size < 5 * 1024 * 1024) {
 
         this._toastr.info(`Uploading ${file.name}`)
@@ -121,7 +122,7 @@ export class ExpandedFormComponent implements OnInit, AfterViewInit {
               path: path
             }
 
-            this.product.images.push(newImage)
+            this.product.productImages.push(newImage)
           },
 
           (err: any) => {
@@ -139,29 +140,8 @@ export class ExpandedFormComponent implements OnInit, AfterViewInit {
   }
 
   removeImage(i) {
-    this._firebaseService.deleteFile(this.product.images[i].path)
-    this.product.images.splice(i, 1)
+    this._firebaseService.deleteFile(this.product.productImages[i].path)
+    this.product.productImages.splice(i, 1)
   }
 
-}
-
-interface Product {
-  productTitle: String;
-  productHiglight: String[];
-  productFeatures: JSON[];
-  price: String;
-  manufacturer: String;
-  description: String;
-  images: Image[];
-  pickup_address: Address
-}
-
-interface Image {
-  url: String,
-  path: String
-}
-
-interface Address {
-  lat: String,
-  lon: String
 }

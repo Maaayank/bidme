@@ -6,6 +6,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { AuctionService } from 'src/app/services/auction.service';
 import { DataService } from 'src/app/services/data.service';
 import { ToastrService } from 'ngx-toastr';
+import { Product, Bid, Address } from '../../interfaces/index'
 
 declare const $: any
 
@@ -151,7 +152,9 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
 
   private subscribeToBidUpdates() {
     this._auctionService.onBidUpdates(this.product.pid).subscribe((res: any) => {
-      this.bids = res
+      this.bids = res.bids
+      if(res.auctionAmount > 0)
+        this.product.auctionAmount = res.auctionAmount
     })
   }
 
@@ -172,7 +175,9 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
         this._dataService.changeWallet(res.wallet)
         this._toastr.success(res.msg)
         this._toastr.info(`Transaction: ${res.tid}`)
+        this.product.prevBid = res.bidded
       },
+
       (err) => {
         this._toastr.error('res.msg')
       }
@@ -180,35 +185,10 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+
+    if(this.subscription)
+      this.subscription.unsubscribe();
+
     this._auctionService.disconnectSocket()
   }
-}
-
-
-interface Product {
-  pid: Number,
-  productTitle: String;
-  productHiglight: String[];
-  productFeatures: JSON[];
-  auctionAmount: Number;
-  price: String;
-  manufacturer: String;
-  productDescription: String;
-  images: String[];
-  pickup_address: Address;
-  startsAt: Number;
-  endsAt: Number;
-  prevBid: number
-}
-
-interface Address {
-  lat: String,
-  lon: String
-}
-
-interface Bid {
-  username: String,
-  timestamp: Number,
-  bid: Number
 }

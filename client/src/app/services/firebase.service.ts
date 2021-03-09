@@ -4,33 +4,33 @@ import { AngularFireAuth } from '@angular/fire/auth'
 import { finalize } from 'rxjs/operators'
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class FirebaseService {
 
 
-    constructor(private _store: AngularFireStorage , private _auth: AngularFireAuth) {
+    constructor(private _store: AngularFireStorage, private _auth: AngularFireAuth) {
 
         _auth.authState.subscribe(auth => {
             console.log("USER AUTHENTICATED: " + auth.uid);
-          })
-     }
+        })
+    }
 
-    authUser(token: any){
+    authUser(token: any) {
         this._auth.signInWithCustomToken(token).then(
-            res => { console.log(`firebase auth complete : ${res}`)},
-            err => { console.log(` error ${err}`)}
+            res => { console.log(`firebase auth complete : ${res}`) },
+            err => { console.log(` error ${err}`) }
         )
     }
 
 
-    uploadFile( path: string, file: File){
+    uploadFile(path: string, file: File) {
 
-        return new Promise<any>( (resolve, reject)=> {
+        return new Promise<any>((resolve, reject) => {
 
             const task: AngularFireUploadTask = this._store.upload(path, file)
             task.snapshotChanges().pipe(
-                finalize(()=>{
+                finalize(() => {
                     this.getDownloadUrl(path).subscribe(
                         res => resolve(res),
                         err => reject(err)
@@ -40,11 +40,11 @@ export class FirebaseService {
         })
     }
 
-    deleteFile( path: String){
+    deleteFile(path: String) {
         this._store.ref(String(path)).delete()
     }
 
-    getDownloadUrl(path){
+    getDownloadUrl(path) {
         return this._store.ref(path).getDownloadURL()
     }
-}   
+}

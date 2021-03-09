@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
-import { UserService } from 'src/app/services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Product } from '../../../interfaces'
 
 @Component({
   selector: 'homepage-products',
@@ -11,12 +11,11 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ProductsComponent implements OnInit {
   details: any;
-  products: Products[] = []
+  products: Product[] = []
 
   constructor(
     private _productService: ProductService,
     public router: Router,
-    private _userService:UserService,
     private _toastr: ToastrService,
   ) { }
 
@@ -35,8 +34,4 @@ export class ProductsComponent implements OnInit {
   cardClicked(pid){
       this.router.navigate(['/product', pid]);
   }
-}
-
-interface Products {
-
 }

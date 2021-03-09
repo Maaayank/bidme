@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {environment} from '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedsService {
 
-  url: string = "http://127.0.0.1:3000"
-  // url:string="https://540a5a2d797e.ngrok.io"
+  url: string = environment.base_url
+  
   constructor(private _http: HttpClient) { }
 
   fetchFeeds() {
