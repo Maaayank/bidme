@@ -26,6 +26,8 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   bids: Bid[] = []
   bidPlaced: number;
   totalBid: number;
+  check:boolean=true;
+  status_check:string=""
 
   private subscription: Subscription;
 
@@ -44,8 +46,16 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
       this._productservice.fetchProductDetail(params['pid']).subscribe(
         (data: any) => {
           console.log(data.product)
-
           this.bids = data.bids
+          if(Object.keys(this.bids).length === 0){
+            //console.log("empty");
+            this.check=false;
+          }
+          else{
+            //console.log(this.bids);
+            this.check=true;
+          }
+
           this.product = data.product
           if ('price' in this.product) {
             this.priceExist = true
@@ -82,11 +92,9 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   bidStatus(startsAt, endsAt) {
     var now = Date.now()
     if (now < startsAt) {
-
       this.startsIn(startsAt, endsAt)
 
     } else if (now > startsAt && now < endsAt) {
-
       this.endsIn(startsAt, endsAt)
 
     } else {
@@ -95,6 +103,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   }
 
   private startsIn(startsAt, endsAt) {
+    this.status_check="btn btn-primary p-3 w-100 m-1"
 
     var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
     var diff = this.getTimeDifference(startsAt)
@@ -129,6 +138,8 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   }
 
   private endsIn(startsAt, endsAt) {
+
+    this.status_check="btn btn-success p-3 w-100 m-1";
 
     var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
     var diff = this.getTimeDifference(endsAt)
@@ -165,13 +176,9 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   }
 
   private ended() {
+    this.status_check="btn btn-danger p-3 w-100 m-1"
     this.auctionStatus = "Ended"
   }
-
-  // openModal() {
-  //   $('#bidDialog').modal('show')
-  //   console.log('openModal')
-  // }
 
   private subscribeToBidUpdates() {
     this._auctionService.onBidUpdates(this.product.pid).subscribe((res: any) => {
@@ -199,6 +206,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
         this._toastr.success(res.msg)
         this._toastr.info(`Transaction: ${res.tid}`)
         this.product.prevBid = res.bidded
+        this.check=true;
       },
       (err) => {
         this._toastr.error(err.error.msg)
