@@ -45,7 +45,7 @@
                     <div class="plain-card2">
                         <div class="row">
                             <div class="col-12 ">
-                                <div class="btn btn-primary p-3 w-100 m-1">
+                                <div class={{status_check}}>
                                     {{auctionStatus}}
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="row" *ngIf="bidOnGoing" style="margin-top: 20px;">
-                        <div class="col-12">
+                        <div class="col-12" *ngIf="check">
                             <span>Bidders : </span>
                             <div class="border p-2" style="margin-top: 5px;" *ngFor="let bid of bids | slice:0:10;">
                                 <div class="row">
