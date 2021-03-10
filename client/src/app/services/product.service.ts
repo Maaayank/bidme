@@ -28,7 +28,7 @@ export class ProductService {
   }
 
   bidOnProduct(data){
-    return this._http.post(this.url + `/api/product/bid`, data, {
+    return this._http.post(this.url + `/api/auction/bid`, data, {
       observe: 'body',
       withCredentials: true,
       headers: new HttpHeaders().append('Content-Type','application/json')

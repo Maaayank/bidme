@@ -16,7 +16,7 @@ export class HomepageComponent implements OnInit {
     image: null,
     pid: null,
     auctionAmount: 0,
-    productImages : null,
+    productImages : [],
     startsAt: null,
     endsAt: null,
     prevBid: null,

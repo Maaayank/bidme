@@ -101,7 +101,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
         this.auctionStatus = `STARTS IN ${hours} HOURS ${minutes} MINUTES`
       } else {
         this.subscription = interval(1000).subscribe((x) => {
-          diff = this.getTimeDifference(endsAt)
+          diff = this.getTimeDifference(startsAt)
           totalSeconds = diff / 1000;
           totalMinutes = totalSeconds / 60;
           seconds = Math.floor(totalSeconds) % 60;
@@ -162,14 +162,14 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
     return time - Date.now()
   }
 
-  private bid(bid) {
+  bid() {
 
     var data = {
-      bid: bid,
+      bid: this.bidPlaced,
       pid: this.product.pid
     }
 
-    this._toastr.info(`Bid submitted of  ${bid}`)
+    this._toastr.info(`Bid submitted of  ${this.bidPlaced}`)
     this._productservice.bidOnProduct(data).subscribe(
       (res: any) => {
         this._dataService.changeWallet(res.wallet)
@@ -177,9 +177,8 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
         this._toastr.info(`Transaction: ${res.tid}`)
         this.product.prevBid = res.bidded
       },
-
       (err) => {
-        this._toastr.error('res.msg')
+        this._toastr.error(err.error.msg)
       }
     )
   }

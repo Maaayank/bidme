@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { DataService } from 'src/app/services/data.service';
 
 declare var gapi: any;
 declare var $: any
@@ -14,12 +15,10 @@ declare var $: any
 })
 
 export class LoginComponent implements OnInit {
-  info:any;
+  info: any;
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.email, Validators.required]),
-     //pass: new FormControl('',[Validators.required,  Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)])
-    //email: new FormControl('', Validators.required),
-    pass: new FormControl('', [Validators.required,Validators.minLength(8),Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)])
+    pass: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)])
   });
 
   get email() { return this.loginForm.get('email') }
@@ -29,12 +28,13 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _user: UserService,
     private _toastr: ToastrService,
+    private _dataService: DataService
   ) {
-      this.info={
-        passinfo:'Password should contain First capital letter Password should be of min 8 length Password should contain at least special character and digit',
-        email:'Email is invalid'
-      }
-   }
+    this.info = {
+      passinfo: 'Password should contain First capital letter Password should be of min 8 length Password should contain at least special character and digit',
+      email: 'Email is invalid'
+    }
+  }
 
   ngOnInit(): void {
     this.btnRender();
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 
 
   moveToRegister() {
-    window.open("/register","_self")
+    window.open("/register", "_self")
   }
 
   login() {
@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
           console.log(data);
           this._router.navigate(['/home']);
           this._toastr.success("", data.msg)
+          this.getProfile()
         },
 
         error => {
@@ -68,7 +69,7 @@ export class LoginComponent implements OnInit {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User signed out.');
-      this._user.checkL=false;
+      this._user.checkL = false;
     });
   }
 
@@ -97,6 +98,7 @@ export class LoginComponent implements OnInit {
             console.log(data);
             this._toastr.success("", data.msg)
             this._router.navigate(['/home']);
+            this.getProfile()
           },
           error => {
             console.error(error.error);
@@ -114,11 +116,13 @@ export class LoginComponent implements OnInit {
 
   }
 
-  onSignedIn(googleUser: any) {
-    let profile = googleUser.getBasicProfile();
-    const token = googleUser.getAuthResponse().id_token
-    const username = profile.getName()
-    const email = profile.getEmail()
-    console.log(token + " " + username + " " + email )
+  getProfile() {
+    this._user.profile().subscribe(
+      (data: any) => {
+        this._dataService.changeUsername(data.username || "")
+        this._dataService.changeWallet(data.wallet || "0")
+        this._dataService.toggleIsLoggedIn(true)
+      }
+    )
   }
 }
