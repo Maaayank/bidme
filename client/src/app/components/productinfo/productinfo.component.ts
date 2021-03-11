@@ -27,7 +27,12 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   bidPlaced: number;
   totalBid: number;
   check:boolean=true;
-  status_check:string=""
+  status_check:string="";
+  isDisabled:boolean=true;
+  err_msg:string;
+  wallet:String;
+  check1:string;
+  //btnD:boolean
 
   private subscription: Subscription;
 
@@ -41,6 +46,8 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
+    this._dataService.wallet.subscribe(wallet => this.wallet = wallet)
 
     this._route.params.subscribe(params => {
       this._productservice.fetchProductDetail(params['pid']).subscribe(
@@ -93,6 +100,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
     var now = Date.now()
     if (now < startsAt) {
       this.status_check="btn btn-warning p-3 w-100 m-1"
+      this.isDisabled=true;
 
       var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
       var diff = this.getTimeDifference(startsAt)
@@ -122,6 +130,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
       }
     } else if (now > startsAt && now < endsAt) {
       this.status_check="btn btn-primary p-3 w-100 m-1";
+      this.isDisabled=false;
 
       this._auctionService.connectToAuction()
       this.subscribeToBidUpdates()
@@ -155,6 +164,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
     } else {
       this.auctionStatus = "Ended"
       this.status_check="btn btn-danger p-3 w-100 m-1"
+      this.isDisabled=true;
     }
   }
 
@@ -176,14 +186,25 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
   }
 
   bid() {
-
     var data = {
       bid: this.bidPlaced,
       pid: this.product.pid
     }
-
-    this._toastr.info(`Bid submitted of  ${this.bidPlaced}`)
-    this._productservice.bidOnProduct(data).subscribe(
+    if(this.bidPlaced===undefined){
+      this._toastr.error(`Field Cannot be empty`);
+      this.err_msg="Field Cannot be empty"
+    // console.log(this.product.auctionAmount);
+    // console.log(this.wallet);
+    // console.log(this.bidPlaced);
+    }else if(this.bidPlaced>parseInt(JSON.stringify(this.wallet))){
+      this._toastr.error(`Entered Amount is more than your wallet`);
+      this.err_msg="Entered Amount is more than your wallet"
+    }else if((this.bidPlaced+this.product.prevBid)<this.product.auctionAmount){
+      this._toastr.error(`Bid Amount is less`);
+      this.err_msg="Bid Amount is less";
+    }else{
+      this._toastr.info(`Bid submitted of  ${this.bidPlaced}`)
+      this._productservice.bidOnProduct(data).subscribe(
       (res: any) => {
         this._dataService.changeWallet(res.wallet)
         this._toastr.success(res.msg)
@@ -195,6 +216,10 @@ export class ProductInfoComponent implements OnInit, OnDestroy {
         this._toastr.error(err.error.msg)
       }
     )
+    }
+
+
+    
   }
 
   ngOnDestroy() {

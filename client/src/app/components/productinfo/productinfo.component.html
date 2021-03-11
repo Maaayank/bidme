@@ -59,11 +59,11 @@
                             </div>
                         </div>
                         <div class="row" *ngIf="priceExist" style="margin-top: 10px;">
-                            <div class="col-4">
-                                <div class="btn btn-primary border w-100 p-3" data-toggle="modal"
-                                    data-target="#bidDialog">
+                            <div class="col-4" >
+                                <button class="btn btn-primary border w-100 p-3" data-toggle="modal"
+                                    data-target="#bidDialog" [disabled]="isDisabled">
                                     BID
-                                </div>
+                                </button>
                             </div>
                             <div class="col-8">
                                 <div class="btn btn-primary w-100 p-3">
@@ -140,6 +140,7 @@
                         <div class="col-3">
                             <input type="number" class="form-control border border-success text-center p-2"
                                 id="placedBid" placeholder="bid..." [(ngModel)]="bidPlaced">
+                                <span>{{err_msg}}</span>
                         </div>
                         <div class="col-1 text-center p-0">
                             =
@@ -153,7 +154,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" (click)="bid()">PLACE BID</button>
+                
+                <button type="button" class="btn btn-success" id="close" data-dismiss="modal" (click)="bid()">PLACE BID</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { FeedsService } from 'src/app/services/feeds.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
     selector: 'feed-container',
@@ -15,11 +16,12 @@ export class FeedsComponent implements OnInit {
 
     constructor(
         private _feedService: FeedsService,
-        private _dataService: DataService
+        private _dataService: DataService,
+        private SpinnerService: NgxSpinnerService
     ) { }
 
     ngOnInit() {
-        this._dataService.feed.subscribe(feed => this.feedVisible = feed)
+      this._dataService.feed.subscribe(feed => this.feedVisible = feed)
         this.feedsLoading = true
         this._feedService.fetchFeeds().subscribe(
 
@@ -27,6 +29,7 @@ export class FeedsComponent implements OnInit {
               //console.log(data);
                 this.feeds = data.feeds
                 this.feedsLoading = false
+                this.SpinnerService.hide();  
             },
 
             error => {
@@ -34,11 +37,7 @@ export class FeedsComponent implements OnInit {
                 console.log(error)
             }
         )
-
-
-
     }
-
     toggleFeed() {
         if (this.feedVisible) {
             this._dataService.toggleFeed(false)

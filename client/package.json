@@ -27,6 +27,7 @@
     "firebase": "^8.2.9",
     "i": "^0.3.6",
     "ng-pick-datetime": "^7.0.0",
+    "ngx-spinner": "^10.0.1",
     "ngx-toastr": "^13.2.0",
     "npm": "^6.14.11",
     "rxjs": "~6.5.4",
