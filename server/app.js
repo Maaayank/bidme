@@ -9,50 +9,60 @@ const PORT = require('./config').development.port
 const logs = require('./config').logs
 const firebase = require('./firebase')
 const socket = require('./socket')
+const cluster = require('cluster');
+const numCPUs = 2;
 
-require('dotenv').config()
+if (cluster.isMaster) {
+    for (var i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+} else {
 
-const app = express()
-const server = http.Server(app)
+    require('dotenv').config()
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
+    const app = express()
+    const server = http.Server(app)
 
-app.use(cors({
-    origin: true,
-    credentials: true
-}))
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }))
 
-app.use(cookieParser())
-app.use(bodyParser.json())
+    app.use(cors({
+        origin: true,
+        credentials: true
+    }))
 
-if (process.env.NODE_ENV != 'production') {
-    app.use(logger(logs.level))
+    app.use(cookieParser())
+    app.use(bodyParser.json())
+
+    if (process.env.NODE_ENV != 'production') {
+        app.use(logger(logs.level))
+    }
+
+    app.get('/', (req, res) => {
+        res.status(200).json({
+            success: true,
+            msg: "home page"
+        })
+    })
+
+    app.use('/api', require('./api'))
+
+    app.use((req, res) => {
+        res.status(404).json({
+            success: false, 
+            msg: `page not found`
+        })
+    })
+
+    database.connect().then((str) => {
+        firebase.initializeApp()
+        server.listen(PORT, () => {
+            console.log(`🛡️  Server listening on port: ${PORT}`)
+            console.log("Started : " + process.pid )
+            socket.connect(server)
+        })
+    }).catch((e) => {
+        console.error(e)
+    })
 }
-
-app.get('/', (req, res) => {
-    res.status(200).json({
-        success: true,
-        msg: "home page"
-    })
-})
-
-app.use('/api', require('./api'))
-
-app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        msg: `page not found`
-    })
-})
-
-database.connect().then((str) => {
-    firebase.initializeApp()
-    server.listen(PORT, () => {
-        console.log(`🛡️  Server listening on port: ${PORT}`)
-        socket.connect(server)
-    })
-}).catch((e) => {
-    console.error(e)
-})

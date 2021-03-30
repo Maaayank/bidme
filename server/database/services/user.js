@@ -10,7 +10,7 @@ module.exports = {
                 exists: true,
                 uid: result.uid,
                 username: result.username,
-                email: result.email,
+                email: result.email,    
                 wallet: result.wallet
             }
         } else {
