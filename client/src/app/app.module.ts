@@ -39,6 +39,7 @@ import { ProductInfoComponent } from './components/productinfo/productinfo.compo
 import { ProductService } from './services/product.service';
 import { FirebaseService } from './services/firebase.service';
 import { AuctionService } from './services/auction.service';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { AuctionService } from './services/auction.service';
     AngularFireStorageModule,
     AngularFireAuthModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    NgxSpinnerModule
   ],
   providers: [UserService, FeedsService, ProductService, FirebaseService, AuctionService],
   bootstrap: [AppComponent]

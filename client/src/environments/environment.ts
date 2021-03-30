@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  //base_url: 'https://4db9694f65ac.ngrok.io',
   base_url: 'http://localhost:3000',
   products_api: "https://product-info-api.herokuapp.com/api",
   firebase : {

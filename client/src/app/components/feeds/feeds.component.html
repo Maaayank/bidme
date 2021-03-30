@@ -1,6 +1,8 @@
+<span>Hello</span>
 <div class="col-sm-12 col-md-9 col-lg-6  feed-container" style="position: absolute; top: 0; right:0;"
     *ngIf="feedVisible">
     <div class="container-fluid card feed-card" style="height: 87vh; overflow: hidden;">
+      
         <div class="row">
             <span class="col" style="font-size:  20px;"><i><b>Feeds</b></i></span>
             <div class="col"></div>
@@ -15,6 +17,7 @@
                 <div class="line"></div>
                 <div class="line"></div>
             </div>
+           
             <div class="card" style="width: 100%; margin-bottom: 10px;" *ngFor="let feed of feeds let i = index">
                 <div class="card-body">
                     <h5 class="card-title">{{feed.title}}</h5>
