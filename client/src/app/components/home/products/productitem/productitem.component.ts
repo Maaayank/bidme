@@ -49,71 +49,97 @@ export class ProductitemComponent implements AfterViewInit, OnDestroy {
     var now = Date.now()
     if (now < startsAt) {
 
-      var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
-      var diff = this.getTimeDifference(startsAt)
+      this.startsIn(startsAt, endsAt)
 
-      totalSeconds = diff / 1000;
-      totalMinutes = totalSeconds / 60;
-      totalHours = totalMinutes / 60;
-      days = Math.floor(totalHours / 24);
-
-      seconds = Math.floor(totalSeconds) % 60;
-      minutes = Math.floor(totalMinutes) % 60;
-      hours = Math.floor(totalHours) % 60;
-
-      if (days >= 1) {
-        this.auctionStatus = `STARTS IN ${days} DAYS ${hours} HOURS`
-      } else if (hours >= 1) {
-        this.auctionStatus = `STARTS IN ${hours} HOURS ${minutes} MINUTES`
-      } else {
-        this.subscription = interval(1000).subscribe((x) => {
-          diff = this.getTimeDifference(endsAt)
-          totalSeconds = diff / 1000;
-          totalMinutes = totalSeconds / 60;
-          seconds = Math.floor(totalSeconds) % 60;
-          minutes = Math.floor(totalMinutes) % 60;
-          this.auctionStatus = `STARTS IN ${minutes} MINUTES ${seconds} SECONDS`
-        })
-      }
     } else if (now > startsAt && now < endsAt) {
 
-      var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
-      var diff = this.getTimeDifference(endsAt)
+      this.endsIn(startsAt, endsAt)
 
-      totalSeconds = diff / 1000;
-      totalMinutes = totalSeconds / 60;
-      totalHours = totalMinutes / 60;
-      days = Math.floor(totalHours / 24);
+    } else {
+      this.ended()
+    }
+  }
 
-      seconds = Math.floor(totalSeconds) % 60;
-      minutes = Math.floor(totalMinutes) % 60;
-      hours = Math.floor(totalHours) % 24;
+  private startsIn(startsAt, endsAt) {
 
-      if (days >= 1) {
-        this.auctionStatus = `ENDS IN ${days} DAYS ${hours} HOURS`
-      } else if (hours >= 1) {
-        this.auctionStatus = `ENDS IN ${hours} HOURS ${minutes} MINUTES`
-      } else {
-        this.subscription = interval(1000).subscribe((_) => {
-          diff = this.getTimeDifference(endsAt)
+    var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
+    var diff = this.getTimeDifference(startsAt)
+
+    totalSeconds = diff / 1000;
+    totalMinutes = totalSeconds / 60;
+    totalHours = totalMinutes / 60;
+    days = Math.floor(totalHours / 24);
+
+    seconds = Math.floor(totalSeconds) % 60;
+    minutes = Math.floor(totalMinutes) % 60;
+    hours = Math.floor(totalHours) % 60;
+
+    if (days >= 1) {
+      this.auctionStatus = `STARTS IN ${days} DAYS ${hours} HOURS`
+    } else if (hours >= 1) {
+      this.auctionStatus = `STARTS IN ${hours} HOURS ${minutes} MINUTES`
+    } else {
+      this.subscription = interval(1000).subscribe((x) => {
+        diff = this.getTimeDifference(startsAt)
+        if (diff <= 0) {
+          this.endsIn(startsAt, endsAt)
+          this.subscription.unsubscribe()
+        }
+        totalSeconds = diff / 1000;
+        totalMinutes = totalSeconds / 60;
+        seconds = Math.floor(totalSeconds) % 60;
+        minutes = Math.floor(totalMinutes) % 60;
+        this.auctionStatus = `STARTS IN ${minutes} MINUTES ${seconds} SECONDS`
+      })
+    } 
+  }
+
+  private endsIn(startsAt, endsAt) {
+
+    var totalHours, totalMinutes, totalSeconds, hours, minutes, seconds, days;
+    var diff = this.getTimeDifference(endsAt)
+
+    totalSeconds = diff / 1000;
+    totalMinutes = totalSeconds / 60;
+    totalHours = totalMinutes / 60;
+    days = Math.floor(totalHours / 24);
+
+    seconds = Math.floor(totalSeconds) % 60;
+    minutes = Math.floor(totalMinutes) % 60;
+    hours = Math.floor(totalHours) % 24;
+
+    if (days >= 1) {
+      this.auctionStatus = `ENDS IN ${days} DAYS ${hours} HOURS`
+    } else if (hours >= 1) {
+      this.auctionStatus = `ENDS IN ${hours} HOURS ${minutes} MINUTES`
+    } else {
+      this.subscription = interval(1000).subscribe((_) => {
+        diff = this.getTimeDifference(endsAt)
+
+        if (diff <= 0) {
+          this.auctionStatus = 'ENDED'
+          this.subscription.unsubscribe()
+        } else {
           totalSeconds = diff / 1000;
           totalMinutes = totalSeconds / 60;
           seconds = Math.floor(totalSeconds) % 60;
           minutes = Math.floor(totalMinutes) % 60;
           this.auctionStatus = `ENDS IN ${minutes} MINUTES ${seconds} SECONDS`
-        })
-      }
-    } else {
-      this.auctionStatus = "Ended"
+        }
+      })
     }
+  }
+
+  private ended() {
+    this.auctionStatus = "Ended"
   }
 
   private getTimeDifference(time) {
     return time - Date.now()
   }
 
-  ngOnDestroy(){
-    if(this.subscription)
+  ngOnDestroy() {
+    if (this.subscription)
       this.subscription.unsubscribe()
   }
 }

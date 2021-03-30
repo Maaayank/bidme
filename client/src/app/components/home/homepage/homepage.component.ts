@@ -99,6 +99,7 @@ export class HomepageComponent implements OnInit {
 
     this._user.submitProduct(data).subscribe(
       (data: any) => {
+        this.out = true
         this._toastr.success("", data.msg)
       },
 
