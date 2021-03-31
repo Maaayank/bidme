@@ -1,4 +1,4 @@
-<div class="container-fluid form-card">
+<div class="form-card container-fluid">
   <div *ngFor="let product of products">
     <products-productitem class="row form-card1 border" [product]="product"
       style="margin-bottom: 10px; cursor: pointer;" (click)="cardClicked(product.pid)">
